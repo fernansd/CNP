@@ -22,9 +22,6 @@ private:
 	// Indica si el miembro vector_centrality está actualizado
 	bool _centralityValido = false;
 
-	// Vector que almacena los resultados de la betweeness centrality para el grafo
-	std::vector<double> vector_centrality;
-
 	// Número que indica la cantidad de nodos a retirar en esta instancia del problema
 	unsigned _numCritMax;
 
