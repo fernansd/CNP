@@ -18,10 +18,10 @@ COSAS CAMBIADAS
 
 */
 
+#include <CNPSolution.h>
+
 #include <vector>
 #include <iostream>
-
-#include <CNPSolution.h>
 
 /**
  * Codificación de funciones de la clase que representa una solución al problema, CNPSolution
@@ -42,8 +42,15 @@ CNPSolution::CNPSolution(CNPInstance &instance){
 		cerr << "No se ha reservado memoria correctamente para _sol" << endl;
 		exit(-1);
 	}*/
+	_vectorCentrality.resize(numNodes);
+	/*if (!_vectorCentrality) {
+		cerr << "No se ha reservado memoria correctamente para _vectorCentrality" << endl;
+		exit(-1);
+	}*/
+
 	for (unsigned i = 0; i < numNodes; i++) {
 		_sol[i] = false;
+		_vectorCentrality[i]=0;
 	}
 
 //_fitnessAssigned=false;
@@ -85,6 +92,26 @@ int CNPSolution::getNode(const unsigned &id){
 	return _sol[id];
 }
 
+void CNPSolution::setVectorFitness(std::vector<double> vecFit){
+	unsigned numNodes=_sol.size();
+	if(vecFit.size()!=(size_t)numNodes){
+		std::cerr << "Ese vector no es del problema." << std::endl;
+		exit(-1);
+	}
+	for(unsigned i=0;i<numNodes;i++){
+		_vectorCentrality[i]=vecFit[i];
+	}
+}
+
+double CNPSolution::getNodeFitness(unsigned &id){
+	if(id>=_sol.size()){
+		std::cerr << "No existe nodo con tal id" << std::endl;
+		exit(-1);
+	}
+	return _vectorCentrality[id];
+
+}
+
 /**
  * Función que copia la información de otra solución
  * @param[in] solution La solución de donde copiar la información
@@ -107,4 +134,5 @@ void CNPSolution::copy(const CNPSolution &solution){
 
 	//_fitnessAssigned = auxSol.hasValidFitness();
 }
+
 
