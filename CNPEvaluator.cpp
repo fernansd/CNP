@@ -118,7 +118,7 @@ double CNPEvaluator::computeFitness(CNPInstance& instance, CNPSolution& solution
 	unsigned tam=instance.getNumNodes();
 	CNPInstance aux;
 	std::vector <double>v_centrality;
-	double max = 0;// TODO definir un valor por defecto razonable, 0 es temporal
+	double sum = 0;// TODO definir un valor por defecto razonable, 0 es temporal
 
 	//Recorremos la parte superior derecha de la matriz
 	for(unsigned i=0;i<tam-1;i++){
@@ -134,15 +134,13 @@ double CNPEvaluator::computeFitness(CNPInstance& instance, CNPSolution& solution
 
 		}
 	}
-	aux.setLado(tam-1,tam-1,false);																	//Ponemos a 0 la conexion del ultimo nodo consigo mismo
+	aux.setLado(tam-1,tam-1,false);																	//Ponemos a 0 la conexion del último nodo consigo mismo
 
 	v_centrality=computeBetweennessCentrality(instance);
 
 	for(unsigned i=0;i<tam;i++){
-		if(max<v_centrality[i]){
-			max=v_centrality[i];
-		}
+			sum+=v_centrality[i];
 	}
 
-	return max;
+	return sum;
 }
