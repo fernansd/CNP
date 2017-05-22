@@ -6,23 +6,29 @@
 CPP_SRCS += \
 ../CNPEvaluator.cpp \
 ../CNPInstance.cpp \
+../CNPSolGenerator.cpp \
 ../CNPSolution.cpp \
 ../Timer.cpp \
-../main.cpp 
+../main.cpp \
+../seeds.cpp 
 
 OBJS += \
 ./CNPEvaluator.o \
 ./CNPInstance.o \
+./CNPSolGenerator.o \
 ./CNPSolution.o \
 ./Timer.o \
-./main.o 
+./main.o \
+./seeds.o 
 
 CPP_DEPS += \
 ./CNPEvaluator.d \
 ./CNPInstance.d \
+./CNPSolGenerator.d \
 ./CNPSolution.d \
 ./Timer.d \
-./main.d 
+./main.d \
+./seeds.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

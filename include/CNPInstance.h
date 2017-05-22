@@ -9,6 +9,9 @@
 #define CNPINSTANCE_H_
 
 #include <vector>
+#include <string>
+#include <fstream>
+#include <iostream>
 
 class CNPInstance {
 private:
@@ -43,6 +46,8 @@ public:
 	void setLado(int n1, int n2, bool estado);
 
 	unsigned getNumCritMax() {return _numCritMax;}
+
+	void readInstance(char* instanceName, int numCritMax);
 };
 
 #endif /* CNPINSTANCE_H_ */
