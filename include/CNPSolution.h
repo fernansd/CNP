@@ -50,6 +50,9 @@ protected:
 	 * _numCritMax Número máximo de nodos críticos.
 	 */
 	std::vector <bool> _sol;
+
+		// Vector que almacena los resultados de la betweeness centrality para el grafo
+	std::vector<double> _vectorCentrality;
 	double _fitness;
 
 	unsigned _numCrit;
@@ -112,6 +115,12 @@ public:
 	 * @return numCrit máximo número de nodos críticos en la solución
 	 */
 	inline unsigned getNumCritMax() const{return _numCritMax;};
+
+	void setVectorFitness(std::vector<double> vecFit);
+
+	inline std::vector<double> getVectorFitness(){return _vectorCentrality;};
+
+	double getNodeFitness(unsigned &id);
 
 	/**
 	 * Función que copia la información de otra solución

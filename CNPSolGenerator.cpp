@@ -25,4 +25,3 @@ void CNPSolGenerator::genRandomSol(CNPInstance &instance, CNPSolution &solution)
 		}
 	}
 }
-
