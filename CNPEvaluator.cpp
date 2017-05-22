@@ -137,6 +137,7 @@ double CNPEvaluator::computeFitness(CNPInstance& instance, CNPSolution& solution
 	aux.setLado(tam-1,tam-1,false);																	//Ponemos a 0 la conexion del último nodo consigo mismo
 
 	v_centrality=computeBetweennessCentrality(instance);
+	solution.setVectorFitness(v_centrality);
 
 	for(unsigned i=0;i<tam;i++){
 			sum+=v_centrality[i];
