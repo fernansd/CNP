@@ -27,7 +27,7 @@ COSAS CAMBIADAS
 #define CNPSOLUTION_H_
 
 #ifndef CNPINSTANCE_H_
-#include "CNPInstance.h"
+#include <CNPInstance.h>
 #else
 class CNPInstance;
 #endif
@@ -68,6 +68,8 @@ public:
 	 * problema CNP
 	 */
 	CNPSolution(CNPInstance &instance);
+
+	CNPSolution(CNPSolution &solution);
 
 	/**
 	 * Destructor
