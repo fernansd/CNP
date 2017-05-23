@@ -117,14 +117,14 @@ bool CNPSimulatedAnnealing::accept(double deltaFitness) {
 	double auxDeltaFitness = deltaFitness;
 
 //	if (MQKPEvaluator::isToBeMinimised()){
-		if(auxDeltaFitness<=0)
+		if(auxDeltaFitness>0)
 			return true;
 //	}
 
 	double prob = exp(auxDeltaFitness/_T);
 	double randSample = (((double)rand()) / RAND_MAX);
 	if(randSample < prob){
-	return (true);
+		return (true);
 	}
 	return false;
 }
