@@ -145,8 +145,9 @@ void CNPSimulatedAnnealing::initialise(double initialProb, int numInitialEstimat
 
 	for (int i=0; i<numInitialEstimates; i++){
 		CNPSolution sol(instance);
+		CNPSolution newSol(sol);
 		CNPSolGenerator::genRandomSol(instance, sol);
-		sol.setFitness(CNPEvaluator::computeFitness(instance, sol));
+		CNPEvaluator::computeFitness(instance, sol);
 
 		unsigned indexNode = rand()%numNodes;
 		unsigned indexNode2= rand()%numNodes;
@@ -157,12 +158,11 @@ void CNPSimulatedAnnealing::initialise(double initialProb, int numInitialEstimat
 		}
 
 		//Intercambio de estados
-		sol.copy(*_solution);
-		sol.setNode(indexNode,sol.getNode(indexNode2));
-		sol.setNode(indexNode2,sol.getNode(indexNode));
+		newSol.setNode(indexNode,sol.getNode(indexNode2));
+		newSol.setNode(indexNode2,sol.getNode(indexNode));
 
 		//evaluacion fitness, ACTUAL-ANTERIOR
-		double deltaFitness=CNPEvaluator::computeFitness(*_instance,sol)-sol.getFitness();
+		double deltaFitness=CNPEvaluator::computeFitness(instance,newSol)-sol.getFitness();
 
 		averageFDiffs += max(fabs(deltaFitness),10.); //He puesto una diferencia mínima de 10 para evitar cambios en el fitness demasiado pequeños (por ejemplo, cuando se modifica una mochila que no es la de la máxima violación (este método se podría mejorar)
 	}
