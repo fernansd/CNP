@@ -93,7 +93,7 @@ int CNPSolution::getNode(const unsigned &id){
 }
 
 void CNPSolution::setVectorFitness(std::vector<double> vecFit){
-	unsigned numNodes=_sol.size();
+	unsigned numNodes=(unsigned)_sol.size();
 	if(vecFit.size()!=(size_t)numNodes){
 		std::cerr << "Ese vector no es del problema." << std::endl;
 		exit(-1);
