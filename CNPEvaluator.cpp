@@ -125,14 +125,14 @@ double CNPEvaluator::computeFitness(CNPInstance& instance, CNPSolution& solution
 				aux.setLado(j,i,false);																		//Igualamos su simetrico
 			}else{
 				aux.setLado(i,j,instance.getLado(i,j));
-				aux.setLado(j,i,instance.getLado(i,j)); 				//Igualamos su simetrico
+				aux.setLado(j,i,instance.getLado(i,j)); 	//Igualamos su simetrico
 			}
 
 		}
 	}
 	aux.setLado(tam-1,tam-1,false);																	//Ponemos a 0 la conexion del último nodo consigo mismo
 
-	v_centrality=computeBetweennessCentrality(instance);
+	v_centrality=computeBetweennessCentrality(aux);
 	solution.setVectorFitness(v_centrality);
 
 	for(unsigned i=0;i<tam;i++){

@@ -18,7 +18,7 @@ void CNPSolGenerator::genRandomSol(CNPInstance &instance, CNPSolution &solution)
 
 	unsigned numNodes=instance.getNumNodes();
 	unsigned numMaxCrit=instance.getNumCritMax();
-	solution.setNumCrit(0);
+	solution.resetSolution();
 
 	while(solution.getNumCrit()!=numMaxCrit){
 		solution.setNode(rand()%numNodes,true);

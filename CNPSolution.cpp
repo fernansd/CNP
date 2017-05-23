@@ -136,12 +136,21 @@ double CNPSolution::getNodeFitness(unsigned &id){
 
 }
 
+void CNPSolution::resetSolution()
+{
+	for (size_t i = 0; i < _sol.size(); i++) {
+		_sol[i] = false;
+	}
+	_numCrit = 0;
+	_fitness = 0;
+}
+
 /**
  * Función que copia la información de otra solución
  * @param[in] solution La solución de donde copiar la información
  *
 */
-void CNPSolution::copy(const CNPSolution &solution){
+void CNPSolution::copy(CNPSolution &solution){
 
 /*
  * 1. Copiar las asignaciones de objetos a mochilas

@@ -51,7 +51,7 @@ protected:
 	 */
 	std::vector <bool> _sol;
 
-		// Vector que almacena los resultados de la betweeness centrality para el grafo
+	// Vector que almacena los resultados de la betweeness centrality para el grafo
 	std::vector<double> _vectorCentrality;
 	double _fitness;
 
@@ -126,12 +126,14 @@ public:
 
 	double getNodeFitness(unsigned &id);
 
+	void resetSolution();
+
 	/**
 	 * Función que copia la información de otra solución
 	 * @param[in] solution La solución de donde copiar la información
 	 *
 	*/
-	void copy(const CNPSolution &solution);
+	void copy(CNPSolution &solution);
 
 	/**
 	 * Función que indica si el fitness de la solución es válido (deja de serlo si se
