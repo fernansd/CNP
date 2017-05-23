@@ -11,10 +11,10 @@ void CNPInstance::setLado(int n1, int n2, bool estado)
 {
 	if (estado == true) {
 		// Conecta los nodos
-		_lados[n1][n2] = _lados[n2][n1] = 1;
+		_lados[n1][n2] = _lados[n2][n1] = true;
 	} else {
 		// Desconecta los nodos
-		_lados[n1][n2] = _lados[n2][n1] = 0;
+		_lados[n1][n2] = _lados[n2][n1] = false;
 	}
 }
 
