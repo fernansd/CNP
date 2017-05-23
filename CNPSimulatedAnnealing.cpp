@@ -147,8 +147,23 @@ void CNPSimulatedAnnealing::initialise(double initialProb, int numInitialEstimat
 		CNPSolution sol(instance);
 		CNPSolGenerator::genRandomSol(instance, sol);
 		sol.setFitness(CNPEvaluator::computeFitness(instance, sol));
-		int indexNode = rand()%instance.getNumNodes();
-// ##CAMBIAR##		double deltaFitness = MQKPEvaluator::computeDeltaFitness(instance, sol, indexObject, indexKnapsack);
+
+		unsigned indexNode = rand()%numNodes;
+		unsigned indexNode2= rand()%numNodes;
+
+		while(_solution->getNode(indexNode)==_solution->getNode(indexNode2)){
+			indexNode = rand()%numNodes;
+			indexNode2= rand()%numNodes;
+		}
+
+		//Intercambio de estados
+		newSol.copy(*_solution);
+		newSol.setNode(indexNode,newSol.getNode(indexNode2));
+		newSol.setNode(indexNode2,newSol.getNode(indexNode));
+
+		//evaluacion fitness, ACTUAL-ANTERIOR
+		double deltaFitness=CNPEvaluator::computeFitness(*_instance,newSol)-_sol->getFitness();
+
 		averageFDiffs += max(fabs(deltaFitness),10.); //He puesto una diferencia mínima de 10 para evitar cambios en el fitness demasiado pequeños (por ejemplo, cuando se modifica una mochila que no es la de la máxima violación (este método se podría mejorar)
 	}
 
