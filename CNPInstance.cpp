@@ -7,14 +7,27 @@
 
 #include "CNPInstance.h"
 
+CNPInstance::CNPInstance(int numNodes, unsigned numCritMax)
+{
+	_numCritMax = numCritMax;
+	_lados.resize(numNodes);
+
+	// Se usa numNodes en vez de .size() ya que es preferible segfault que no inicializar
+	for (int i = 0; i < numNodes; i++) {
+		_lados[i].resize(numNodes);
+	}
+}
+
 void CNPInstance::setLado(int n1, int n2, bool estado)
 {
 	if (estado == true) {
 		// Conecta los nodos
-		_lados[n1][n2] = _lados[n2][n1] = true;
+		_lados[n1][n2] = true;
+		_lados[n2][n1] = true;
 	} else {
 		// Desconecta los nodos
-		_lados[n1][n2] = _lados[n2][n1] = false;
+		_lados[n1][n2] = false;
+		_lados[n2][n1] = false;
 	}
 }
 

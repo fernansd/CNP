@@ -64,10 +64,6 @@ std::vector<double> CNPEvaluator::computeBetweennessCentrality(
 			S.push(v);
 			std::vector<int> neighbours;
 			getNeighbours(instance, v, neighbours);
-			for (int elem : neighbours) {
-				std::cout << " " << elem;
-			}
-			std::cout << std::endl;
 
 			for (int i = 0; i < (int)neighbours.size(); i++) {
 				int w = neighbours[i];
@@ -116,13 +112,13 @@ std::vector<double> CNPEvaluator::computeBetweennessCentrality(
 double CNPEvaluator::computeFitness(CNPInstance& instance, CNPSolution& solution)
 {
 	unsigned tam=instance.getNumNodes();
-	CNPInstance aux;
+	CNPInstance aux(tam, instance.getNumCritMax());
 	std::vector <double>v_centrality;
-	double sum = 0;// TODO definir un valor por defecto razonable, 0 es temporal
+	double sum = 0;// HECHO definir un valor por defecto razonable, 0 es temporal
 
 	//Recorremos la parte superior derecha de la matriz
 	for(unsigned i=0;i<tam-1;i++){
-		aux.setLado(i,i,false);																				//Consideramos que ninguno se enlaza consigo
+		aux.setLado(i,i,false);										//Consideramos que ninguno se enlaza consigo
 		for(unsigned j=i+1;j<tam;j++){
 			if((solution.getNode(j)==1)||(solution.getNode(i)==1)){ //Si el nodo es borrado, todas conexiones a 0
 				aux.setLado(i,j,false);

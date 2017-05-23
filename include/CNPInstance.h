@@ -22,13 +22,18 @@ private:
 	 */
 	std::vector< std::vector<bool> > _lados;
 
-	// Indica si el miembro vector_centrality está actualizado
-	bool _centralityValido = false;
+	/* NO es necesario // Indica si el miembro vector_centrality está actualizado
+	bool _centralityValido = false;*/
 
 	// Número que indica la cantidad de nodos a retirar en esta instancia del problema
 	unsigned _numCritMax;
 
 public:
+
+	CNPInstance() {_numCritMax=-1;}
+
+	CNPInstance(int numNodes, unsigned numCritMax);
+
 	// Se define el tipo el tipo Grafo como una matriz de booleanos
 	typedef std::vector < std::vector<bool> > Grafo;
 
