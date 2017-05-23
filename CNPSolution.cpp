@@ -57,6 +57,30 @@ CNPSolution::CNPSolution(CNPInstance &instance){
 
 }
 
+CNPSolution::CNPSolution(CNPSolution &solution){
+	unsigned numNodes=solution._sol.size();
+
+	_fitness = solution.getFitness();
+	_numCrit=solution.getNumCrit();
+	_numCritMax=solution.getNumCritMax();
+	_sol.resize(numNodes);
+	/*if (!_sol) {
+		cerr << "No se ha reservado memoria correctamente para _sol" << endl;
+		exit(-1);
+	}*/
+	_vectorCentrality.resize(numNodes);
+	/*if (!_vectorCentrality) {
+		cerr << "No se ha reservado memoria correctamente para _vectorCentrality" << endl;
+		exit(-1);
+	}*/
+
+	for (unsigned i = 0; i < numNodes; i++) {
+		_sol[i] = solution.getNode(i);
+		_vectorCentrality[i]=solution.getNodeFitness(i);
+	}
+}
+
+
 /**
  * Función que asigna un estado a un nodo del grafo
  * @param[in] id, posición identificadora de un nodo dentro del vector solución
@@ -93,7 +117,7 @@ int CNPSolution::getNode(const unsigned &id){
 }
 
 void CNPSolution::setVectorFitness(std::vector<double> vecFit){
-	unsigned numNodes=(unsigned)_sol.size();
+	unsigned numNodes=_sol.size();
 	if(vecFit.size()!=(size_t)numNodes){
 		std::cerr << "Ese vector no es del problema." << std::endl;
 		exit(-1);
@@ -124,9 +148,13 @@ void CNPSolution::copy(const CNPSolution &solution){
  * 2. copiar el fitness
  */
 	unsigned numNodes=(unsigned)_sol.size();
+	_sol.resize(numNodes);
+	_vectorCentrality.resize(numNodes);
 
-	for (unsigned i = 0; i < numNodes; i++)
-		_sol[i] = solution._sol[i];
+	for (unsigned i = 0; i < numNodes; i++){
+		_sol[i] = solution.getNode(i);
+		_vectorCentrality[i]=solution.getNodeFitness(i);
+	}
 
 	_fitness = solution.getFitness();
 	_numCrit = solution.getNumCrit();
