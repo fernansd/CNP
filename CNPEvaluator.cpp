@@ -138,6 +138,7 @@ double CNPEvaluator::computeFitness(CNPInstance& instance, CNPSolution& solution
 	for(unsigned i=0;i<tam;i++){
 			sum+=v_centrality[i];
 	}
+	solution.setFitness(sum);
 
 	return sum;
 }

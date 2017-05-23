@@ -6,6 +6,7 @@
 CPP_SRCS += \
 ../CNPEvaluator.cpp \
 ../CNPInstance.cpp \
+../CNPSimulatedAnnealing.cpp \
 ../CNPSolGenerator.cpp \
 ../CNPSolution.cpp \
 ../Timer.cpp \
@@ -15,6 +16,7 @@ CPP_SRCS += \
 OBJS += \
 ./CNPEvaluator.o \
 ./CNPInstance.o \
+./CNPSimulatedAnnealing.o \
 ./CNPSolGenerator.o \
 ./CNPSolution.o \
 ./Timer.o \
@@ -24,6 +26,7 @@ OBJS += \
 CPP_DEPS += \
 ./CNPEvaluator.d \
 ./CNPInstance.d \
+./CNPSimulatedAnnealing.d \
 ./CNPSolGenerator.d \
 ./CNPSolution.d \
 ./Timer.d \

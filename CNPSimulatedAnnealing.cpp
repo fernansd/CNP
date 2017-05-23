@@ -3,7 +3,7 @@
  *
  * Fichero que define las funciones de la clase CNPSimulatedAnnealing.
  *
- * @author: Chacal anónimo
+ * @author: Chacal anï¿½nimo
  */
 
 #include <CNPSimulatedAnnealing.h>
@@ -25,7 +25,7 @@ void CNPSimulatedAnnealing::setSolution(CNPSolution* solution) {
 	}
 
 	if (_solution != NULL){
-		cerr << "No se debe invocar más de una vez el método CNPSimulatedAnnealing::setSolution" << endl;
+		cerr << "No se debe invocar mï¿½s de una vez el mï¿½todo CNPSimulatedAnnealing::setSolution" << endl;
 		exit(1);
 	}
 
@@ -54,7 +54,7 @@ void CNPSimulatedAnnealing::run(CNPStopCondition& stopCondition) {
 	_results.clear();
 	unsigned numNodes = _instance->getNumNodes();
 	unsigned numIterations = 0;
-	CNPSolution newSol;
+	CNPSolution newSol(*_solution);
 
 	/**
 	 * hecho
@@ -81,7 +81,7 @@ void CNPSimulatedAnnealing::run(CNPStopCondition& stopCondition) {
 		newSol.setNode(indexNode2,newSol.getNode(indexNode));
 
 		//evaluacion fitness, ACTUAL-ANTERIOR
-		double deltaFitness=CNPEvaluator::computeFitness(*_instance,newSol)-_sol->getFitness();
+		double deltaFitness=CNPEvaluator::computeFitness(*_instance,newSol)-_solution->getFitness();
 
 		if (accept(deltaFitness)){
 			_solution->copy(newSol);
@@ -135,12 +135,12 @@ void CNPSimulatedAnnealing::initialise(double initialProb, int numInitialEstimat
 	_annealingFactor = annealingFactor;
 	_instance = &instance;
 	_itsPerAnnealing = itsPerAnnealing;
-	int numObjs = instance.getNumNodes();
+	int numNodes = instance.getNumNodes();
 	double averageFDiffs = 0.;
 
 	/**
-	 * Inicialización de la temperatura.
-	 * Para ello, se generan una serie de soluciones iniciales y de vecinos. Se calcula la diferencia media de fitness hacia peores soluciones y se despeja la temperatura de la función de aceptación.
+	 * Inicializaciï¿½n de la temperatura.
+	 * Para ello, se generan una serie de soluciones iniciales y de vecinos. Se calcula la diferencia media de fitness hacia peores soluciones y se despeja la temperatura de la funciï¿½n de aceptaciï¿½n.
 	 */
 
 	for (int i=0; i<numInitialEstimates; i++){
@@ -151,18 +151,18 @@ void CNPSimulatedAnnealing::initialise(double initialProb, int numInitialEstimat
 		unsigned indexNode = rand()%numNodes;
 		unsigned indexNode2= rand()%numNodes;
 
-		while(_solution->getNode(indexNode)==_solution->getNode(indexNode2)){
+		while(sol.getNode(indexNode)==sol.getNode(indexNode2)){
 			indexNode = rand()%numNodes;
 			indexNode2= rand()%numNodes;
 		}
 
 		//Intercambio de estados
-		newSol.copy(*_solution);
-		newSol.setNode(indexNode,newSol.getNode(indexNode2));
-		newSol.setNode(indexNode2,newSol.getNode(indexNode));
+		sol.copy(*_solution);
+		sol.setNode(indexNode,sol.getNode(indexNode2));
+		sol.setNode(indexNode2,sol.getNode(indexNode));
 
 		//evaluacion fitness, ACTUAL-ANTERIOR
-		double deltaFitness=CNPEvaluator::computeFitness(*_instance,newSol)-_sol->getFitness();
+		double deltaFitness=CNPEvaluator::computeFitness(*_instance,sol)-sol.getFitness();
 
 		averageFDiffs += max(fabs(deltaFitness),10.); //He puesto una diferencia mÃ­nima de 10 para evitar cambios en el fitness demasiado pequeÃ±os (por ejemplo, cuando se modifica una mochila que no es la de la mÃ¡xima violaciÃ³n (este mÃ©todo se podrÃ­a mejorar)
 	}

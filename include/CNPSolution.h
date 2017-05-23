@@ -111,6 +111,8 @@ public:
 	 */
 	inline unsigned getNumCrit() const{return _numCrit;};
 
+	inline void setNumCrit(unsigned num) {_numCrit=num;};
+
 	/**
 	 * Función que devuelve el máximo número de nodos críticos en la solución
 	 *
