@@ -6,6 +6,7 @@
  */
 
 #include "CNPInstance.h"
+#include <CNPEvaluator.h>
 
 CNPInstance::CNPInstance(int numNodes, unsigned numCritMax)
 {
@@ -16,6 +17,7 @@ CNPInstance::CNPInstance(int numNodes, unsigned numCritMax)
 	for (int i = 0; i < numNodes; i++) {
 		_lados[i].resize(numNodes);
 	}
+	_sumaCentrality = 0;
 }
 
 void CNPInstance::setLado(int n1, int n2, bool estado)
@@ -63,4 +65,10 @@ void CNPInstance::readInstance(char* instanceName, int numCritMax)
 			}
 		}
 	}
+	double suma = 0;
+	std::vector<double> centrality = CNPEvaluator::computeBetweennessCentrality(*this);
+	for (size_t i = 0; i < centrality.size(); i++) {
+		suma += centrality[i];
+	}
+	_sumaCentrality = suma;
 }

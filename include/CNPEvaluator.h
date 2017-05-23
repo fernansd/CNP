@@ -37,13 +37,12 @@ protected:
 	 */
 	static unsigned _numEvaluations;
 
+public:
 	// Función que guarda en neighbours los nodos vecinos del nodo pasado por parámetro
 	static void getNeighbours(CNPInstance& instance, int nodo, std::vector<int>& neighbours);
 
 	// Función que obtiene la betweenness centrality para todos los nodos del grafo
 	static std::vector<double> computeBetweennessCentrality(CNPInstance& instance);
-
-public:
 
 	/**
 	 * Función que resetea la variable interna que contabiliza el número de evaluaciones

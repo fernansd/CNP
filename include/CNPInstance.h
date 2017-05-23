@@ -25,6 +25,8 @@ private:
 	/* NO es necesario // Indica si el miembro vector_centrality está actualizado
 	bool _centralityValido = false;*/
 
+	double _sumaCentrality = 0;
+
 	// Número que indica la cantidad de nodos a retirar en esta instancia del problema
 	unsigned _numCritMax;
 
@@ -50,6 +52,8 @@ public:
 	unsigned getNumCritMax() {return _numCritMax;}
 
 	void readInstance(char* instanceName, int numCritMax);
+
+	double getSuma() {return _sumaCentrality;}
 };
 
 #endif /* CNPINSTANCE_H_ */

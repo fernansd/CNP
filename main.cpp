@@ -158,7 +158,7 @@ unsigned int computeMeans(vector< vector<double>* > &results, vector<currentBest
 					currentMean.current += value;
 				}
 
-				currentMean.best += min(value, previousMean.best);
+				currentMean.best += max(value, previousMean.best);
 			}
 		}
 
