@@ -33,6 +33,27 @@ void CNPInstance::setLado(int n1, int n2, bool estado)
 	}
 }
 
+void CNPInstance::randomPermutation(int size, vector<int>& perm) {
+
+	/** HECHO
+	 * 1. Vacía el vector perm
+	 * 2. Llénalo con la permutación identidad
+	 * 3. Recórrelo intercambiando cada elemento con otro escogido de forma aleatoria.
+	 */
+
+	int aux,pos;
+	perm.clear();
+	for(int i=0;i<size;i++){
+		perm.push_back(i);
+	}
+	for(int i=0;i<size;i++){
+		pos=rand()%size;
+		aux=perm[pos];
+		perm[pos]=perm[i];
+		perm[i]=aux;}
+}
+
+
 
 void CNPInstance::readInstance(char* instanceName, int numCritMax)
 {
