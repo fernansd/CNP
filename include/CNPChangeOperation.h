@@ -1,5 +1,5 @@
 /*
- * MQKPChangeOperation.h
+ * CNPChangeOperation.h
  */
 
 #ifndef __CNPCHANGEOPERATION_H__
@@ -7,16 +7,19 @@
 
 #include <CNPSolution.h>
 
+
 /**
  * Clase abstracta para representar cualquier operación de modificación sobre una solución.
  */
 class CNPChangeOperation{
+
 public:
 
 	/**
 	 * Destructor
 	 */
 	virtual ~CNPChangeOperation(){
+
 	}
 
 	/**
@@ -27,3 +30,4 @@ public:
 };
 
 #endif
+

@@ -58,8 +58,7 @@ protected:
 	unsigned _numCrit;
 	unsigned _numCritMax;
 
-	// bool _fitnessAssigned; No sé si habrá que añadirla para saber qué individuos tienen
-	// el fitness asignado en las del 4
+	bool _fitnessAssigned; 
 
 public:
 	/**
@@ -89,7 +88,7 @@ public:
 	 * @param[in] id, posición identificadora de un nodo dentro del vector solución
 	 * @return estado del nodo, borrado o intacto1
 	 */
-	int getNode(const unsigned &id);
+	bool getNode(const unsigned &id);
 
 	/**
 	 * Función que asigna el fitness de la solución
@@ -140,11 +139,15 @@ public:
 	 * cambia un objeto de mochila; y se convierte en válido cuando se le asigna)
 	 *
 	 * Para ahorrarnos las evaluaciones de soluciones que son copias de otras
-
-	bool hasValidFitness(){
+	*/
+	inline bool hasValidFitness(){
 		return _fitnessAssigned;
 	}
-	*/
+
+	inline void setValidFitness(bool fitnessAssigned){
+		_fitnessAssigned=fitnessAssigned;
+	}
+	
 };
 
 #endif /* CNPSOLUTION_H_ */
