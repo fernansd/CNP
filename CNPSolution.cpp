@@ -53,7 +53,7 @@ CNPSolution::CNPSolution(CNPInstance &instance){
 		_vectorCentrality[i]=0;
 	}
 
-//_fitnessAssigned=false;
+_fitnessAssigned=false;
 
 }
 
@@ -107,7 +107,7 @@ void CNPSolution::setNode(const unsigned &id, const bool &estado){
  * @param[in] id, posicioón identificadora de un nodo dentro del vector solución
  * @return estado del nodo, borrado o intacto
  */
-int CNPSolution::getNode(const unsigned &id){
+bool CNPSolution::getNode(const unsigned &id){
 	if(id>=_sol.size()){
 		std::cerr << "No existe nodo con tal id" << std::endl;
 		exit(-1);
@@ -165,11 +165,11 @@ void CNPSolution::copy(CNPSolution &solution){
 		_vectorCentrality[i]=solution.getNodeFitness(i);
 	}
 
-	_fitness = solution.getFitness();
-	_numCrit = solution.getNumCrit();
+	setFitness(solution.getFitness());
+	setNumCrit(solution.getNumCrit());
 	_numCritMax = solution.getNumCritMax();
 
-	//_fitnessAssigned = auxSol.hasValidFitness();
+	setValidFitness(auxSol.hasValidFitness());
 }
 
 
