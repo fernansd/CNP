@@ -12,6 +12,7 @@
 #include <CNPMetaheuristic.h>
 #include <CNPInstance.h>
 #include <CNPSolution.h>
+#include <CNPSolGenerator.h>
 #include <CNPLocalSearch.h>
 #include <CNPSimpleFirstImprovementNO.h>
 #include <CNPNodeAssignmentOperation.h>
