@@ -137,7 +137,7 @@ void CNPGrasp::run(CNPStopCondition& stopCondition) {
 			_results.push_back(result);
 		}
 
-		if (CNPEvaluator::compare(_sol->getFitness(), _bestSolution->getFitness()) > 0)
+		if ((_sol->getFitness()-_bestSolution->getFitness()) > 0)
 			_bestSolution->copy(*_sol);
 
 		stopCondition.notifyIteration();
