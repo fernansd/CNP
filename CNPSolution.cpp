@@ -78,6 +78,7 @@ CNPSolution::CNPSolution(CNPSolution &solution){
 		_sol[i] = solution.getNode(i);
 		_vectorCentrality[i]=solution.getNodeFitness(i);
 	}
+	_fitnessAssigned=solution.hasValidFitness();
 }
 
 
@@ -169,7 +170,7 @@ void CNPSolution::copy(CNPSolution &solution){
 	setNumCrit(solution.getNumCrit());
 	_numCritMax = solution.getNumCritMax();
 
-	setValidFitness(auxSol.hasValidFitness());
+	setValidFitness(solution.hasValidFitness());
 }
 
 
