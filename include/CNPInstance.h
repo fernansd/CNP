@@ -51,6 +51,13 @@ public:
 
 	unsigned getNumCritMax() {return _numCritMax;}
 
+	/**
+	 * Función que genera una permutación de los enteros de 0 a (size - 1)
+	 * @param[in] size Tamaño de la permutación
+	 * @param[out] perm Vector donde se almacenará la permutación
+	 */
+	static void randomPermutation(int size, vector<int> &perm);
+
 	void readInstance(char* instanceName, int numCritMax);
 
 	double getSuma() {return _sumaCentrality;}
