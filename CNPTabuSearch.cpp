@@ -98,6 +98,9 @@ void CNPTabuSearch::run(CNPStopCondition& stopCondition) {
 				auxSol.setNode(indexNode, false);
 			}
 		}
+		if (bestSol.getNumCrit() > bestSol.getNumCritMax()) {
+			std::cerr << "Excedido límite de nodos: " << bestSol.getNumCrit() << std::endl;
+		}
 
 		//Hecho Aplicar la operación y almacenarla en la memoria a corto plazo
 		_solution->copy(bestSol);

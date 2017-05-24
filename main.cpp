@@ -7,7 +7,7 @@
 //============================================================================
 
 //Definición de algunos parámetros de la experimentación
-#define MAX_SECONDS_PER_RUN 5
+#define MAX_SECONDS_PER_RUN 10
 #define MAX_SOLUTIONS_PER_RUN 100000
 #define NUM_RUNS 5
 
@@ -70,7 +70,7 @@ void runASAExperiment(vector<double> &currentResults,
 	CNPSimulatedAnnealing sa;
 	CNPStopCondition stopCond;
 	CNPEvaluator::resetNumEvaluations();
-	sa.initialise(0.9, 10, 0.9999, 10, instance); //cambiado el segundo 10 antes ponia un 50 lo digo el de practicas
+	sa.initialise(0.9, 10, 0.98888, 10, instance); //cambiado el segundo 10 antes ponia un 50 lo digo el de practicas
 	stopCond.setConditions(MAX_SOLUTIONS_PER_RUN, 0, MAX_SECONDS_PER_RUN);
 
 	//Generar solución aleatoria
@@ -205,19 +205,19 @@ void runExperiments(vector< vector< vector< double>* >* > &results, char **mainA
 		vector<double> *theseFirstResults;
 		vector<double> *bestFirstResults;
 
-		/*//Ejecutar el enfriamientoSimulado
+		/*//Ejecutar el enfriamientoSimulado */
 		theseFirstResults = new vector<double>;
 		bestFirstResults = new vector<double>;
 		resultsOnThisInstance->push_back(theseFirstResults);
 		resultsOnThisInstance->push_back(bestFirstResults);
-		runASAExperiment(*theseFirstResults, *bestFirstResults, instance);*/
+		runASAExperiment(*theseFirstResults, *bestFirstResults, instance);
 
-		/*//Ejecutar la búsqueda tabú */
+		/*//Ejecutar la búsqueda tabú
 		theseFirstResults = new vector<double>;
 		bestFirstResults = new vector<double>;
 		resultsOnThisInstance->push_back(theseFirstResults);
 		resultsOnThisInstance->push_back(bestFirstResults);
-		runATSExperiment(*theseFirstResults, *bestFirstResults, instance);
+		runATSExperiment(*theseFirstResults, *bestFirstResults, instance);*/
 
 		/*//Ejecutar la búsqueda Iterated Greedy
 		theseFirstResults = new vector<double>;

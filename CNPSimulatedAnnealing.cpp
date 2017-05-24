@@ -69,7 +69,8 @@ void CNPSimulatedAnnealing::run(CNPStopCondition& stopCondition) {
 	unsigned indexNode;
 	unsigned indexNode2;
 	bool aux;
-
+	cout << "---------------------------\n"
+				<< _T << endl << "----------------------\n";
 	while (stopCondition.reached() == false){
 
 		indexNode = rand()%numNodes;
@@ -106,6 +107,8 @@ void CNPSimulatedAnnealing::run(CNPStopCondition& stopCondition) {
 
 		stopCondition.notifyIteration();
 	}
+	cout << "---------------------------\n"
+			<< _T << endl << "----------------------\n";
 }
 
 
