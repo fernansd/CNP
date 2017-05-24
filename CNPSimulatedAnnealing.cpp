@@ -128,7 +128,7 @@ bool CNPSimulatedAnnealing::accept(double deltaFitness) {
 			return true;
 //	}
 
-	double prob = exp(auxDeltaFitness/_T);
+	double prob = exp(-auxDeltaFitness/_T);
 	double randSample = (((double)rand()) / RAND_MAX);
 	if(randSample < prob){
 		return (true);
