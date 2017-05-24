@@ -7,7 +7,7 @@
 //============================================================================
 
 //Definición de algunos parámetros de la experimentación
-#define MAX_SECONDS_PER_RUN 10
+#define MAX_SECONDS_PER_RUN 5
 #define MAX_SOLUTIONS_PER_RUN 100000
 #define NUM_RUNS 5
 
@@ -19,6 +19,7 @@
 #include <CNPSimulatedAnnealing.h>
 #include <CNPStopCondition.h>
 #include <CNPIteratedGreedy.h>
+#include <CNPTabuSearch.h>
 
 #include <cstdio>
 #include <cstdlib>
@@ -135,6 +136,45 @@ void runAIGExperiment(vector<double> &currentResults,
 }
 
 /**
+ * Función que ejecuta la búsqueda tabú, durante MAX_SECONS_PER_RUN segundos, un máximo de MAX_SOLUTIONS_PER_RUN, para la instancia proporcionada
+ * @param[out] currentResults vector donde se almacenarán los valores fitness de las soluciones que va aceptando el enfriamiento simulado.
+ * @param[out] bestSoFarResults vector donde se almacenarán los mejores valores fitness generados hasta el momento
+ * @param[in] instance Instancia del problema de la mochila cuadrática múltiple
+ */
+void runATSExperiment(vector<double> &currentResults,
+		vector<double> &bestSoFarResults, CNPInstance &instance) {
+
+	//Inicialización
+	CNPSolution initialSolution(instance);
+	CNPTabuSearch ts;
+	CNPStopCondition stopCond;
+	CNPEvaluator::resetNumEvaluations();
+	ts.initialise(&instance, ((unsigned)(instance.getNumNodes() / 10)));
+	stopCond.setConditions(MAX_SOLUTIONS_PER_RUN, 0, MAX_SECONDS_PER_RUN);
+
+	//Generar solución aleatoria
+	CNPSolGenerator::genRandomSol(instance, initialSolution);
+	double currentFitness = CNPEvaluator::computeFitness(instance,
+			initialSolution);
+	initialSolution.setFitness(currentFitness);
+	double bestFitness = currentFitness;
+	currentResults.push_back(currentFitness);
+	bestSoFarResults.push_back(bestFitness);
+	ts.setSolution(&initialSolution);
+
+	//Aplicar TS
+	ts.run(stopCond);
+
+	//Almacenar los resultados
+	vector<double> &resultsTS = ts.getResults();
+
+	for (auto aResult : resultsTS) {
+		currentResults.push_back(aResult);
+		bestSoFarResults.push_back(max(bestSoFarResults.back(), aResult));
+	}
+}
+
+/**
  * Función que ejecuta todos los experimentos para los argumentos pasados al programa principal, en particular NUM_RUNS experimentos para cada instancia
  * @param[out] results matriz 3D donde se almacenarán los resultados. El primer índice será para la instancia considerada. El segundo para el experimento sobre dicha instancia. El tercero para la solución generada en dicho experimento
  * @param[in] mainArgs Argumentos de la función main (argv). En los argumentos vienen, desde el índice 1, <nombre del fichero de la instancia 1> <número de mochilas> <nombre del fichero de la instancia 2> <número de mochilas>...
@@ -165,19 +205,19 @@ void runExperiments(vector< vector< vector< double>* >* > &results, char **mainA
 		vector<double> *theseFirstResults;
 		vector<double> *bestFirstResults;
 
-		//Ejecutar el enfriamientoSimulado
+		/*//Ejecutar el enfriamientoSimulado
 		theseFirstResults = new vector<double>;
 		bestFirstResults = new vector<double>;
 		resultsOnThisInstance->push_back(theseFirstResults);
 		resultsOnThisInstance->push_back(bestFirstResults);
-		runASAExperiment(*theseFirstResults, *bestFirstResults, instance);
+		runASAExperiment(*theseFirstResults, *bestFirstResults, instance);*/
 
-		/*//Ejecutar la búsqueda tabú
+		/*//Ejecutar la búsqueda tabú */
 		theseFirstResults = new vector<double>;
 		bestFirstResults = new vector<double>;
 		resultsOnThisInstance->push_back(theseFirstResults);
 		resultsOnThisInstance->push_back(bestFirstResults);
-		runATSExperiment(*theseFirstResults, *bestFirstResults, instance);*/
+		runATSExperiment(*theseFirstResults, *bestFirstResults, instance);
 
 		/*//Ejecutar la búsqueda Iterated Greedy
 		theseFirstResults = new vector<double>;
