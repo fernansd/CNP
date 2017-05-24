@@ -11,6 +11,7 @@ CPP_SRCS += \
 ../CNPLocalSearch.cpp \
 ../CNPNodeAssignmentOperation.cpp \
 ../CNPObjectAssignmentOperation.cpp \
+../CNPSimpleBestImprovementNO.cpp \
 ../CNPSimpleFirstImprovementNO.cpp \
 ../CNPSimulatedAnnealing.cpp \
 ../CNPSolGenerator.cpp \
@@ -28,6 +29,7 @@ OBJS += \
 ./CNPLocalSearch.o \
 ./CNPNodeAssignmentOperation.o \
 ./CNPObjectAssignmentOperation.o \
+./CNPSimpleBestImprovementNO.o \
 ./CNPSimpleFirstImprovementNO.o \
 ./CNPSimulatedAnnealing.o \
 ./CNPSolGenerator.o \
@@ -45,6 +47,7 @@ CPP_DEPS += \
 ./CNPLocalSearch.d \
 ./CNPNodeAssignmentOperation.d \
 ./CNPObjectAssignmentOperation.d \
+./CNPSimpleBestImprovementNO.d \
 ./CNPSimpleFirstImprovementNO.d \
 ./CNPSimulatedAnnealing.d \
 ./CNPSolGenerator.d \

@@ -10,62 +10,64 @@
 #include <CNPSolGenerator.h>
 #include <vector>
 #include <iostream>
+#include <cmath>
 
 using namespace std;
 
-void CNPGrasp::chooseOperation(CNPNodeAssignmentOperation& operation) {
+void CNPGrasp::chooseOperation(CNPObjectAssignmentOperation& operation,
+		std::vector<double>& centrls) {
 
-	int bestNode1=0,bestNode2=0;
-	double bestDeltaFitness = 0;
-	bool initialised=false;
-	unsigned numNodes = _instance->getNumNodes();
-	//unsigned numCriticalNodes = _instance->getNumCritMax();
+	unsigned newNode = -1;
+	//unsigned oldNode = -1;
+    //double bestCentrality = 0;
 
+	double newDeltaFitness = 0;
+    //bool initialisedBestCentrality = false;
+    unsigned numNodes = _instance->getNumNodes();
+    unsigned chosenNodes = (unsigned)floor(numNodes*0.1); // Elige el 10 % mejor
+    //unsigned numCriticalNodes = _instance->getNumCritMax();
+    std::vector<int> topNodes; // Vector que guarda los nodos elegidos como mejores
+    for (unsigned i = 0; i < numNodes; i++) {
 
-	/**
-	 * Calcular el nÃºmero de intentos como el porcentaje _alpha por el nÃºmero de posibilidades, que es el nÃºmero de objetos por el nÃºmero de mochilas.
-	 *
-	 * En este paso no se considerarÃ¡ que ya haya objetos asignados a alguna mochila, la mochila 0 que representa objetos sin asignar a ninguna mochila, ni que haya mochilas ya completamente llenas
-	 */
-	unsigned numTries = ((unsigned)(numNodes * _alpha));  /***COMPROBAR***/
+   		int indexNode = i;
+   		//vector<bool> currentSol=_sol->getSolution();
+		//comprobar que no ha sido eliminado 0 es no eliminado / 1 es eliminado
+   		if (_sol->getNode(indexNode)==false) {
 
-	/**
-	 * hecho
-	 * Generar alternativas de objeto y mochila aleatorias (no se considera la mochila 0) y quedarse con la alterantiva de mejor densidad
-	 */
+   			// NO se guardan en todos los casos los N mejores, se garantiza sólo elegir varios de los buenos
+   			// Si ya no se pueden añadir nodos nuevos se sustituye uno
+   			if (topNodes.size() == chosenNodes) {
+				for (size_t j = 0; j < chosenNodes; j++) {
+					if (centrls[indexNode] > centrls[topNodes[j]]) {
+						topNodes[j] = indexNode;
+					}
+				}
+   			} else {
+   				topNodes.push_back(indexNode);
+   			}
 
-	unsigned indexNode,indexNode2;
-	bool aux;
+   			/*//double deltaFitness = CNPEvaluator::computeDeltaFitness(*_instance,*_sol, indexNode);
+			double deltaFitness = CNPEvaluator::computeFitness(*_instance,*_sol);
+			//double centrality = deltaFitness/centrls[indexNode];
+			if (bestCentrality > centrality || initialisedBestCentrality == false) {
+				initialisedBestCentrality = true;
+				bestCentrality = centrality;
+				bestNode = indexNode;
+				newDeltaFitness = deltaFitness;
+			}*/
+   	 	}
+    }
+    unsigned selected = (unsigned)rand()%chosenNodes;
+    if (selected >= chosenNodes) {
+    	std::cerr << "Valor no válido --> " << selected << std::endl;
+    }
+    newNode = topNodes[selected];
+    /*
+    CNPSolution aux(*_sol);
+    aux.setNode(newNode, true);
+    newDeltaFitness = CNPEvaluator::computeFitness(*_instance, *_sol);*/
 
-	for (unsigned i = 0; i < numTries; i++) {
-
-		CNPSolution newSol(*_sol);
-
-		indexNode = rand()%numNodes;
-		indexNode2= rand()%numNodes;
-
-		while(_sol->getNode(indexNode)==_sol->getNode(indexNode2)){
-			indexNode = rand()%numNodes;
-			indexNode2= rand()%numNodes;
-		}
-
-		//Intercambio de estados
-		aux=newSol.getNode(indexNode);
-		newSol.setNode(indexNode,newSol.getNode(indexNode2));
-		newSol.setNode(indexNode2,aux);
-
-		double deltaFitness = CNPEvaluator::computeFitness(*_instance,newSol)-_sol->getFitness(); //hecho obtener la mejora en fitness de dicha operaciÃ³n
-
-		//hecho actualizar si resulta ser la mejor
-		if (bestDeltaFitness < deltaFitness||initialised==false) {
-			initialised=true;
-			bestNode1 = indexNode;
-			bestNode2 = indexNode2;
-			bestDeltaFitness = deltaFitness;
-		}
-	}
-
-	operation.setValues(bestNode1,bestNode2,bestDeltaFitness);
+    operation.setValues(newNode, newDeltaFitness);
 }
 
 
@@ -76,11 +78,12 @@ void CNPGrasp::buildInitialSolution() {
 	 * Vaciar la soluciÃ³n _sol asignÃ¡ndole un fitness de 0 y poniendo todos los objetos en la mochila 0
 	 */
 
-	CNPSolGenerator::genRandomSol(*_instance, *_sol)
+	//CNPSolGenerator::genRandomSol(*_instance, *_sol);
 
 	/** Seleccionar la primera operaciÃ³n */
-	CNPNodeAssignmentOperation operation;
-	chooseOperation(operation);
+	CNPObjectAssignmentOperation operation;
+	std::vector<double> centrls = _sol->getVectorFitness();
+	chooseOperation(operation, centrls);
 
 	/**
 	 * hecho
@@ -89,10 +92,11 @@ void CNPGrasp::buildInitialSolution() {
 	 *  2. Almacenar el fitness de la soluciÃ³n en _result (para las grÃ¡ficas)
 	 *  3. seleccionar una nueva operaciÃ³n
 	 */
-	while (operation.getDeltaFitness() > 0) {
+	while (_sol->getNumCrit()!=_sol->getNumCritMax()) {
 		operation.apply(*_sol);
+		_sol->setFitness(CNPEvaluator::computeFitness(*_instance, *_sol));
 		_results.push_back(_sol->getFitness());
-		chooseOperation(operation);
+		chooseOperation(operation, centrls);
 	}
 }
 
@@ -113,9 +117,11 @@ void CNPGrasp::run(CNPStopCondition& stopCondition) {
 		exit(-1);
 	}
 
-	CNPSolGenerator::genRandomSol(*_instance,*_sol);
-	double fitness = CNPEvaluator::computeFitness(*_instance,*_sol);
-	_sol->setFitness(fitness);
+	//CNPSolGenerator::genRandomSol(*_instance,*_sol);
+	//double fitness = CNPEvaluator::computeFitness(*_instance,*_sol);
+	//_sol->setFitness(fitness);
+	CNPSolution emptySol(*_instance);
+
 
 	/**
 	 * hecho
@@ -126,9 +132,10 @@ void CNPGrasp::run(CNPStopCondition& stopCondition) {
 	 *   4. Actualizar la mejor soluciÃ³n
 	 */
 	while (stopCondition.reached() == false) {
+		_sol->copy(emptySol);
+		_results.push_back(_sol->getFitness());
 		buildInitialSolution();
 		_results.push_back(_sol->getFitness());
-
 		if ((_sol->getFitness()-_bestSolution->getFitness()) > 0)
 			_bestSolution->copy(*_sol);
 

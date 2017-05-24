@@ -18,6 +18,8 @@
 #include <CNPNodeAssignmentOperation.h>
 #include <vector>
 
+#include <CNPObjectAssignmentOperation.h>
+
 using namespace std;
 
 /**
@@ -48,7 +50,7 @@ protected:
 	 * Función que devuelve la mejor operación de asignación de un objeto sin asignar a una mochila de entre una serie de alternativas seleccionadas de forma aleatoria
 	 * @param[out] operation Operación de asignación de un objeto a mochila seleccionada
 	 */
-	void chooseOperation(CNPNodeAssignmentOperation &operation);
+	void chooseOperation(CNPObjectAssignmentOperation &operation, std::vector<double>& centrls);
 
 	/**
 	 * Función que crea una solución desde la mochila vacía. Para ello, invoca repetidamente a la función chooseOperation hasta que llega un momento en el que no encuentra ninguna otra operación de asignación que mejore la solución actual (de entre las seleccionadas aleatoriamente).
@@ -77,7 +79,7 @@ public:
 		}
 
 		if (_sol != NULL){
-			delete _sol;
+			//delete _sol;
 			_sol = NULL;
 		}
 	}

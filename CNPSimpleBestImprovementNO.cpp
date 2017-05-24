@@ -14,7 +14,7 @@ using namespace std;
 
 bool CNPSimpleBestImprovementNO::findOperation(CNPInstance& instance, CNPSolution& solution, CNPChangeOperation& operation) {
 
-	CNPNOdeAssignmentOperation *oaOperation = dynamic_cast<CNPNodeAssignmentOperation*>(&operation);
+	CNPNodeAssignmentOperation *oaOperation = dynamic_cast<CNPNodeAssignmentOperation*>(&operation);
 	if (oaOperation == NULL){
 		cerr << "CNPSimpleBestImprovementNO::findOperation recibió un objeto operation que no es de la clase CNPObjectAssignmentOperation" << endl;
 		exit(1);
@@ -29,25 +29,26 @@ bool CNPSimpleBestImprovementNO::findOperation(CNPInstance& instance, CNPSolutio
 	int numNodo = instance.getNumNodes();
 
 	instance.randomPermutation(numNodo,perm);
-	instance.rendomPermutation(numNodo,perm2);
+	instance.randomPermutation(numNodo,perm2);
 	
 
-	bool initialised = false,aux;
+	bool initialised = false;
+	bool aux;
 	double bestFitness = 0;
 
 	double fitness=0.0;
 
 	for(int i=0;i<numNodo;i++){
 		for(int j=0;j<numNodo;j++){
-			newSOl.copy(solution);
+			newSol.copy(solution);
 
 
-			if(newSol.getNodo(perm[i])!=newSol.getNodo(perm[j]){
-				aux=newSOl.getNode(perm[i]);
+			if(newSol.getNode(perm[i])!=newSol.getNode(perm[j])){
+				aux=newSol.getNode(perm[i]);
 
-				newSOl.setNode(perm[i],newSol.getNode(perm[j]));
-				newSOl.setNode(perm[j],aux);
-				fitness = CNPEvaluator::computeFitness(instance, newSol)
+				newSol.setNode(perm[i],newSol.getNode(perm[j]));
+				newSol.setNode(perm[j],aux);
+				fitness = CNPEvaluator::computeFitness(instance, newSol);
 			}
 			if(fitness>bestFitness  || initialised == false){
 				initialised = true;
