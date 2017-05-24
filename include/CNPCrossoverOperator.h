@@ -53,9 +53,9 @@ protected:
 			while(sol->getNumCrit()<sol->getNumCritMax()){
 				indexNode=rand()%_numNodes;														//No hay control de repetidos ya que se tarda menos generando incluso ya cogidos y setNode no incrementa NumCrit si ya estaba a true
 
-				if((sol1->getNode(i)==true)&&(sol2->getNode(i)==true)){							//Ambos son 1
+				if((sol1->getNode(indexNode)==true)&&(sol2->getNode(indexNode)==true)){							//Ambos son 1
 					prob=85;
-				}else if(!((sol1->getNode(i)==false)&&(sol2->getNode(i)==false))){				//Ambos distintos
+				}else if(!((sol1->getNode(indexNode)==false)&&(sol2->getNode(indexNode)==false))){				//Ambos distintos
 					prob=50;
 				}
 
@@ -99,7 +99,7 @@ public:
 		//TODO aplicar cruce entre cada dos padres consecutivos (1,2), (3,4), ...
 		for (unsigned i=0;i<numParents;i=i+2) {
 			CNPSolution *sol = cross(parents[i],parents[i+1]);
-			offspring.push_back(sol);
+			offspring.push_back((Solution*)sol);
 		}
 	}
 };

@@ -20,6 +20,8 @@
 #include <CNPStopCondition.h>
 #include <CNPIteratedGreedy.h>
 #include <CNPTabuSearch.h>
+#include <CNPGrasp.h>
+#include <CNPGeneticAlgorithm.h>
 
 #include <cstdio>
 #include <cstdlib>
@@ -175,6 +177,85 @@ void runATSExperiment(vector<double> &currentResults,
 }
 
 /**
+ * Función que ejecuta la búsqueda GRASP, durante MAX_SECONS_PER_RUN segundos, un máximo de MAX_SOLUTIONS_PER_RUN, para la instancia proporcionada
+ * @param[out] currentResults vector donde se almacenarán los valores fitness de las soluciones que va aceptando el enfriamiento simulado.
+ * @param[out] bestSoFarResults vector donde se almacenarán los mejores valores fitness generados hasta el momento
+ * @param[in] instance Instancia del problema de la mochila cuadrática múltiple
+ */
+void runAGraspExperiment(vector<double> &currentResults,
+		vector<double> &bestSoFarResults, CNPInstance &instance) {
+
+	//Inicialización
+	CNPSolution initialSolution(instance);
+	CNPGrasp grasp;
+	CNPStopCondition stopCond;
+	CNPEvaluator::resetNumEvaluations();
+	grasp.initialise(0.25, instance);
+	stopCond.setConditions(MAX_SOLUTIONS_PER_RUN, 0, MAX_SECONDS_PER_RUN);
+
+	//Generar solución aleatoria para inicialiar la mejor solución
+	CNPSolGenerator::genRandomSol(instance, initialSolution);
+	double currentFitness = CNPEvaluator::computeFitness(instance,
+			initialSolution);
+	initialSolution.setFitness(currentFitness);
+	double bestFitness = currentFitness;
+	currentResults.push_back(currentFitness);
+	bestSoFarResults.push_back(bestFitness);
+
+	//Aplicar GRASP
+	grasp.run(stopCond);
+
+	//Almacenar los resultados
+	vector<double> &resultsGRASP = grasp.getResults();
+
+	for (auto aResult : resultsGRASP) {
+		currentResults.push_back(aResult);
+		bestSoFarResults.push_back(max(bestSoFarResults.back(), aResult));
+	}
+}
+
+/**
+ * Función que ejecuta el algoritmo evolutivo, durante MAX_SECONS_PER_RUN segundos, un máximo de MAX_SOLUTIONS_PER_RUN, para la instancia proporcionada
+ * @param[out] currentResults vector donde se almacenarán los valores fitness de las soluciones que se van generando.
+ * @param[out] bestSoFarResults vector donde se almacenarán los mejores valores fitness generados hasta el momento
+ * @param[out] bestPerIterations vector donde se almacenarán los mejores valores fitness de cada generación
+ * @param[out] popMean vector donde se almacenarán los valores fitness medios de cada generación
+ * @param[out] offMean vector donde se almacenarán los valores fitness medios de la población de descendientes
+ * @param[in] instance Instancia del problema de la mochila cuadrática múltiple
+ */
+void runAGAExperiment(vector<double> &currentResults,
+		vector<double> &bestSoFarResults, vector<double> &bestPerIterations,
+		vector<double> &popMean, vector<double> &offMean,
+		CNPInstance &instance) {
+
+	//Inicialización
+	CNPGeneticAlgorithm ga;
+	CNPStopCondition stopCond;
+	CNPEvaluator::resetNumEvaluations();
+	ga.initialise(60, instance);
+	stopCond.setConditions(MAX_SOLUTIONS_PER_RUN, 0, MAX_SECONDS_PER_RUN);
+
+	//Ejecutar el GA
+	ga.run(stopCond);
+
+	//Almacenar los resultados
+	vector<double> &resultsGA = ga.getResults();
+
+	for (double aResult : resultsGA) {
+		currentResults.push_back(aResult);
+
+		if (bestSoFarResults.size() > 0)
+			bestSoFarResults.push_back(max(bestSoFarResults.back(), aResult));
+		else
+			bestSoFarResults.push_back(aResult);
+	}
+
+	bestPerIterations = ga.getBestsPerIterations();
+	popMean = ga.getPopMeanResults();
+	offMean = ga.getOffMeanResults();
+}
+
+/**
  * Función que ejecuta todos los experimentos para los argumentos pasados al programa principal, en particular NUM_RUNS experimentos para cada instancia
  * @param[out] results matriz 3D donde se almacenarán los resultados. El primer índice será para la instancia considerada. El segundo para el experimento sobre dicha instancia. El tercero para la solución generada en dicho experimento
  * @param[in] mainArgs Argumentos de la función main (argv). En los argumentos vienen, desde el índice 1, <nombre del fichero de la instancia 1> <número de mochilas> <nombre del fichero de la instancia 2> <número de mochilas>...
@@ -205,19 +286,26 @@ void runExperiments(vector< vector< vector< double>* >* > &results, char **mainA
 		vector<double> *theseFirstResults;
 		vector<double> *bestFirstResults;
 
-		/*//Ejecutar el enfriamientoSimulado */
+		/*//Ejecutar el enfriamientoSimulado
 		theseFirstResults = new vector<double>;
 		bestFirstResults = new vector<double>;
 		resultsOnThisInstance->push_back(theseFirstResults);
 		resultsOnThisInstance->push_back(bestFirstResults);
-		runASAExperiment(*theseFirstResults, *bestFirstResults, instance);
+		runASAExperiment(*theseFirstResults, *bestFirstResults, instance);*/
 
-		/*//Ejecutar la búsqueda tabú
+		/*//Ejecutar la búsqueda tabú *
 		theseFirstResults = new vector<double>;
 		bestFirstResults = new vector<double>;
 		resultsOnThisInstance->push_back(theseFirstResults);
 		resultsOnThisInstance->push_back(bestFirstResults);
 		runATSExperiment(*theseFirstResults, *bestFirstResults, instance);*/
+
+		/*//Ejecutar la búsqueda GRASP */
+		theseFirstResults = new vector<double>;
+		bestFirstResults = new vector<double>;
+		resultsOnThisInstance->push_back(theseFirstResults);
+		resultsOnThisInstance->push_back(bestFirstResults);
+		runAGraspExperiment(*theseFirstResults, *bestFirstResults, instance);
 
 		/*//Ejecutar la búsqueda Iterated Greedy
 		theseFirstResults = new vector<double>;
@@ -225,6 +313,20 @@ void runExperiments(vector< vector< vector< double>* >* > &results, char **mainA
 		resultsOnThisInstance->push_back(theseFirstResults);
 		resultsOnThisInstance->push_back(bestFirstResults);
 		runAIGExperiment(*theseFirstResults, *bestFirstResults, instance);*/
+
+		//Ejecutar el algoritmo evolutivo
+		vector<double> *theseResults = new vector<double>;
+		vector<double> *bestResults = new vector<double>;
+		vector<double> *bestPerIterations = new vector<double>;
+		vector<double> *popMeanResults = new vector<double>;
+		vector<double> *offMeanResults = new vector<double>;
+		resultsOnThisInstance->push_back(theseResults);
+		resultsOnThisInstance->push_back(bestResults);
+		resultsOnThisInstance->push_back(bestPerIterations);
+		resultsOnThisInstance->push_back(popMeanResults);
+		resultsOnThisInstance->push_back(offMeanResults);
+		runAGAExperiment(*theseResults, *bestResults, *bestPerIterations,
+				*popMeanResults, *offMeanResults, instance);
 	}
 }
 
@@ -430,11 +532,13 @@ int main(int argc, char **argv) {
 	// SA, TS, IG
 	vector<double> lastResults;
 	for (unsigned int iInstance = 0; iInstance < numInstances; iInstance++){
-		cout << argv[iInstance*2+1] << "_" << argv[iInstance*2+2] << "_currentSA\t";
+		/*cout << argv[iInstance*2+1] << "_" << argv[iInstance*2+2] << "_currentSA\t";
 		cout << argv[iInstance*2+1] << "_" << argv[iInstance*2+2] << "_bestSA\t";
-		/*cout << argv[iInstance*2+1] << "_" << argv[iInstance*2+2] << "_currentTS\t";
-		cout << argv[iInstance*2+1] << "_" << argv[iInstance*2+2] << "_bestTS\t";
-		cout << argv[iInstance*2+1] << "_" << argv[iInstance*2+2] << "_currentIG\t";
+		cout << argv[iInstance*2+1] << "_" << argv[iInstance*2+2] << "_currentTS\t";
+		cout << argv[iInstance*2+1] << "_" << argv[iInstance*2+2] << "_bestTS\t";*/
+		cout << argv[iInstance*2+1] << "_" << argv[iInstance*2+2] << "_currentGrasp\t";
+		cout << argv[iInstance*2+1] << "_" << argv[iInstance*2+2] << "_bestGrasp\t";
+		/*cout << argv[iInstance*2+1] << "_" << argv[iInstance*2+2] << "_currentIG\t";
 		cout << argv[iInstance*2+1] << "_" << argv[iInstance*2+2] << "_bestIG\t";*/
 		lastResults.push_back(allTheResults.at(iInstance)->at(0)->at(0));
 		lastResults.push_back(allTheResults.at(iInstance)->at(1)->at(0));

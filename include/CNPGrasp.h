@@ -12,8 +12,6 @@
 #include <CNPMetaheuristic.h>
 #include <CNPInstance.h>
 #include <CNPSolution.h>
-#include <CNPLocalSearch.h>
-#include <CNPSimpleFirstImprovementNO.h>
 #include <CNPNodeAssignmentOperation.h>
 #include <vector>
 
@@ -37,8 +35,6 @@ protected:
 	double _alpha;
 	CNPInstance *_instance;
 	CNPSolution *_sol;
-	CNPLocalSearch _ls;
-	CNPSimpleFirstImprovementNO _no;
 
 	/**
 	 * vector de doubles donde almacena la calidad de la última solución aceptada

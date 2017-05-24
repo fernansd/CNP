@@ -11,10 +11,10 @@
 
 #include <CNPMetaheuristic.h>
 #include <CNPSolution.h>
-#include <SelectionOperator.h>
+#include <CNPSelectionOperator.h>
 #include <CNPCrossoverOperator.h>
 #include <CNPMutationOperator.h>
-#include <TournamentSelector.h>
+#include <CNPTournamentSelector.h>
 #include <vector>
 #include <iostream>
 
@@ -68,7 +68,7 @@ protected:
 		// Buscamos si hay algún elemento mejor que el primero
 		for (size_t i = 1; i < set.size(); i++) {
 			if (set[i]->getFitness()-set[indexBest]->getFitness() > 0) {
-				indexBest = i;
+				indexBest = (unsigned)i;
 			}
 		}
 
@@ -90,7 +90,7 @@ protected:
 		// Buscamos si existe alguna solución peor que el primero
 		for (size_t i = 1; i < set.size(); i++) {
 			if (set[i]->getFitness()-set[indexWorst]->getFitness() < 0) {
-				indexWorst = i;
+				indexWorst = (unsigned)i;
 			}
 		}
 
@@ -196,7 +196,7 @@ protected:
 		 */
 		for (unsigned i = 0; i < popSize; i++) {
 			// Generamos una solución aleatoria
-			CNPSolution* sol = new CNPSolution(_instance);
+			CNPSolution* sol = new CNPSolution(*_instance);
 			CNPSolGenerator::genRandomSol(*_instance, *sol);
 
 			// Evaluamos y actualizamos la mejor
@@ -206,7 +206,7 @@ protected:
 				_bestSolution->copy(*sol);
 			}
 			_results.push_back(fitness);
-			_population.push_back(sol);
+			_population.push_back((Solution*)sol);
 		}
 	}
 

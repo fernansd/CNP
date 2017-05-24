@@ -23,8 +23,8 @@ void CNPNodeAssignmentOperation::apply(CNPSolution& solution) {
 	 * 2. Actualiza el fitness de solution sumándole _deltaFitness
 	 */
 
-	bool aux=newSol.getNode(_node1);
-	solution.setNode(_node1,newSol.getNode(_node2));
+	bool aux=solution.getNode(_node1);
+	solution.setNode(_node1,solution.getNode(_node2));
 	solution.setNode(_node2,aux);
 
 	double actualFitness = solution.getFitness();

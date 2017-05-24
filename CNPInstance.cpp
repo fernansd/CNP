@@ -33,7 +33,7 @@ void CNPInstance::setLado(int n1, int n2, bool estado)
 	}
 }
 
-void CNPInstance::randomPermutation(int size, vector<int>& perm) {
+void CNPInstance::randomPermutation(int size, std::vector<int>& perm) {
 
 	/** HECHO
 	 * 1. Vacía el vector perm

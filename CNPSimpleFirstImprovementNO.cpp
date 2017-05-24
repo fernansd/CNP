@@ -5,7 +5,7 @@
 #include <CNPSimpleFirstImprovementNO.h>
 #include <CNPInstance.h>
 #include <CNPEvaluator.h>
-#include <CNPNodetAssignmentOperation.h>
+#include <CNPNodeAssignmentOperation.h>
 #include <stdlib.h>
 #include <iostream>
 #include <cmath>

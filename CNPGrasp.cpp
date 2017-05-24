@@ -7,21 +7,20 @@
  */
 
 #include <CNPGrasp.h>
+#include <CNPSolGenerator.h>
 #include <vector>
-#include <CNPSimpleFirstImprovementNO.h>
-#include <CNPLocalSearch.h>
 #include <iostream>
 
 using namespace std;
 
-void CNPGrasp::chooseOperation(CNPObjectAssignmentOperation& operation) {
+void CNPGrasp::chooseOperation(CNPNodeAssignmentOperation& operation) {
 
 	int bestNode1=0,bestNode2=0;
 	double bestDeltaFitness = 0;
 	bool initialised=false;
 	unsigned numNodes = _instance->getNumNodes();
-	unsigned numCriticalNodes = _instance->getNumCritMax();
-	
+	//unsigned numCriticalNodes = _instance->getNumCritMax();
+
 
 	/**
 	 * Calcular el nÃºmero de intentos como el porcentaje _alpha por el nÃºmero de posibilidades, que es el nÃºmero de objetos por el nÃºmero de mochilas.
@@ -36,16 +35,16 @@ void CNPGrasp::chooseOperation(CNPObjectAssignmentOperation& operation) {
 	 */
 
 	unsigned indexNode,indexNode2;
-	bool aux;	
-	
+	bool aux;
+
 	for (unsigned i = 0; i < numTries; i++) {
 
-	CNPSolution newSol(*_sol);
+		CNPSolution newSol(*_sol);
 
 		indexNode = rand()%numNodes;
 		indexNode2= rand()%numNodes;
 
-		while(sol.getNode(indexNode)==sol.getNode(indexNode2)){
+		while(_sol->getNode(indexNode)==_sol->getNode(indexNode2)){
 			indexNode = rand()%numNodes;
 			indexNode2= rand()%numNodes;
 		}
@@ -84,7 +83,7 @@ void CNPGrasp::buildInitialSolution() {
 	}
 
 	/** Seleccionar la primera operaciÃ³n */
-	CNPObjectAssignmentOperation operation;
+	CNPNodeAssignmentOperation operation;
 	chooseOperation(operation);
 
 	/**
@@ -118,6 +117,10 @@ void CNPGrasp::run(CNPStopCondition& stopCondition) {
 		exit(-1);
 	}
 
+	CNPSolGenerator::genRandomSol(*_instance,*_sol);
+	double fitness = CNPEvaluator::computeFitness(*_instance,*_sol);
+	_sol->setFitness(fitness);
+
 	/**
 	 * hecho
 	 * Mientras no se alcance el criterio de parada
@@ -129,13 +132,6 @@ void CNPGrasp::run(CNPStopCondition& stopCondition) {
 	while (stopCondition.reached() == false) {
 		buildInitialSolution();
 		_results.push_back(_sol->getFitness());
-		_ls.optimise(*_instance,_no,*_sol);
-
-		vector<double> &auxResults = _ls.getResults();
-
-		for (auto result : auxResults){
-			_results.push_back(result);
-		}
 
 		if ((_sol->getFitness()-_bestSolution->getFitness()) > 0)
 			_bestSolution->copy(*_sol);

@@ -5,9 +5,13 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../CNPEvaluator.cpp \
+../CNPGrasp.cpp \
 ../CNPInstance.cpp \
 ../CNPIteratedGreedy.cpp \
+../CNPLocalSearch.cpp \
+../CNPNodeAssignmentOperation.cpp \
 ../CNPObjectAssignmentOperation.cpp \
+../CNPSimpleFirstImprovementNO.cpp \
 ../CNPSimulatedAnnealing.cpp \
 ../CNPSolGenerator.cpp \
 ../CNPSolution.cpp \
@@ -18,9 +22,13 @@ CPP_SRCS += \
 
 OBJS += \
 ./CNPEvaluator.o \
+./CNPGrasp.o \
 ./CNPInstance.o \
 ./CNPIteratedGreedy.o \
+./CNPLocalSearch.o \
+./CNPNodeAssignmentOperation.o \
 ./CNPObjectAssignmentOperation.o \
+./CNPSimpleFirstImprovementNO.o \
 ./CNPSimulatedAnnealing.o \
 ./CNPSolGenerator.o \
 ./CNPSolution.o \
@@ -31,9 +39,13 @@ OBJS += \
 
 CPP_DEPS += \
 ./CNPEvaluator.d \
+./CNPGrasp.d \
 ./CNPInstance.d \
 ./CNPIteratedGreedy.d \
+./CNPLocalSearch.d \
+./CNPNodeAssignmentOperation.d \
 ./CNPObjectAssignmentOperation.d \
+./CNPSimpleFirstImprovementNO.d \
 ./CNPSimulatedAnnealing.d \
 ./CNPSolGenerator.d \
 ./CNPSolution.d \

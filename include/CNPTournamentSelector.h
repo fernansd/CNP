@@ -10,7 +10,7 @@
 #define INCLUDE_TOURNAMENTSELECTOR_H_
 
 #include <Solution.h>
-#include <SelectionOperator.h>
+#include <CNPSelectionOperator.h>
 #include <vector>
 
 using namespace std;

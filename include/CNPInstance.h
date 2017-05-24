@@ -56,7 +56,7 @@ public:
 	 * @param[in] size Tamaño de la permutación
 	 * @param[out] perm Vector donde se almacenará la permutación
 	 */
-	static void randomPermutation(int size, vector<int> &perm);
+	static void randomPermutation(int size, std::vector<int> &perm);
 
 	void readInstance(char* instanceName, int numCritMax);
 
