@@ -336,7 +336,7 @@ public:
 		}
 
 		if (_mutOp == NULL) {
-			_mutOp = new CNPMutationOperator((0.25 / _instance->getNumObjs()),
+			_mutOp = new CNPMutationOperator((0.25 / _instance->getNumNodes()),
 					*_instance);
 		}
 
