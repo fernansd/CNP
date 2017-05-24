@@ -75,12 +75,8 @@ void CNPGrasp::buildInitialSolution() {
 	 * hecho
 	 * Vaciar la soluciÃ³n _sol asignÃ¡ndole un fitness de 0 y poniendo todos los objetos en la mochila 0
 	 */
-	unsigned numNodes = _instance->getNumNodes();
 
-	_sol->setFitness(0);
-	for (unsigned i = 0; i < numNodes; i++) {
-		_sol->setNode(i, false);
-	}
+	CNPSolGenerator::genRandomSol(*_instance, *_sol)
 
 	/** Seleccionar la primera operaciÃ³n */
 	CNPNodeAssignmentOperation operation;
@@ -104,7 +100,7 @@ void CNPGrasp::buildInitialSolution() {
 void CNPGrasp::initialise(double alpha, CNPInstance& instance) {
 
 	_sol = new CNPSolution(instance);
-	_bestSolution = new CNPSolution(instance);
+	_bestSolution = _sol;
 	_bestSolution->copy(*_sol);
 	_instance = &instance;
 	_alpha = alpha;
