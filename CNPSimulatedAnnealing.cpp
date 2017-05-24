@@ -65,9 +65,15 @@ void CNPSimulatedAnnealing::run(CNPStopCondition& stopCondition) {
 	 *   4. Actualizar la mejor solución hasta el momento.
 	 *   5. Si se llevan _itsPerAnnealing tras el último enfriamiento, entonces enfriar
 	 */
+
+	unsigned indexNode;
+	unsigned indexNode2;
+	bool aux;
+
 	while (stopCondition.reached() == false){
-		unsigned indexNode = rand()%numNodes;
-		unsigned indexNode2= rand()%numNodes;
+
+		indexNode = rand()%numNodes;
+		indexNode2= rand()%numNodes;
 
 		//Se controla debido al alto coste de evaluar el fitness
 		while(_solution->getNode(indexNode)==_solution->getNode(indexNode2)){
@@ -77,8 +83,9 @@ void CNPSimulatedAnnealing::run(CNPStopCondition& stopCondition) {
 
 		//Intercambio de estados
 		newSol.copy(*_solution);
+		aux=newSol.getNode(indexNode);
 		newSol.setNode(indexNode,newSol.getNode(indexNode2));
-		newSol.setNode(indexNode2,newSol.getNode(indexNode));
+		newSol.setNode(indexNode2,aux);
 
 		//evaluacion fitness, ACTUAL-ANTERIOR
 		double deltaFitness=CNPEvaluator::computeFitness(*_instance,newSol)-_solution->getFitness();
@@ -143,14 +150,18 @@ void CNPSimulatedAnnealing::initialise(double initialProb, int numInitialEstimat
 	 * Para ello, se generan una serie de soluciones iniciales y de vecinos. Se calcula la diferencia media de fitness hacia peores soluciones y se despeja la temperatura de la funci�n de aceptaci�n.
 	 */
 
+	unsigned indexNode;
+	unsigned indexNode2;
+	bool aux;
+
 	for (int i=0; i<numInitialEstimates; i++){
 		CNPSolution sol(instance);
 		CNPSolution newSol(sol);
 		CNPSolGenerator::genRandomSol(instance, sol);
 		CNPEvaluator::computeFitness(instance, sol);
 
-		unsigned indexNode = rand()%numNodes;
-		unsigned indexNode2= rand()%numNodes;
+		indexNode = rand()%numNodes;
+		indexNode2= rand()%numNodes;
 
 		while(sol.getNode(indexNode)==sol.getNode(indexNode2)){
 			indexNode = rand()%numNodes;
@@ -158,8 +169,9 @@ void CNPSimulatedAnnealing::initialise(double initialProb, int numInitialEstimat
 		}
 
 		//Intercambio de estados
-		newSol.setNode(indexNode,sol.getNode(indexNode2));
-		newSol.setNode(indexNode2,sol.getNode(indexNode));
+		aux=newSol.getNode(indexNode);
+		newSol.setNode(indexNode,newSol.getNode(indexNode2));
+		newSol.setNode(indexNode2,aux);
 
 		//evaluacion fitness, ACTUAL-ANTERIOR
 		double deltaFitness=CNPEvaluator::computeFitness(instance,newSol)-sol.getFitness();
