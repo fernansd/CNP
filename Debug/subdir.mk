@@ -11,6 +11,7 @@ CPP_SRCS += \
 ../CNPSimulatedAnnealing.cpp \
 ../CNPSolGenerator.cpp \
 ../CNPSolution.cpp \
+../CNPTabuSearch.cpp \
 ../Timer.cpp \
 ../main.cpp \
 ../seeds.cpp 
@@ -23,6 +24,7 @@ OBJS += \
 ./CNPSimulatedAnnealing.o \
 ./CNPSolGenerator.o \
 ./CNPSolution.o \
+./CNPTabuSearch.o \
 ./Timer.o \
 ./main.o \
 ./seeds.o 
@@ -35,6 +37,7 @@ CPP_DEPS += \
 ./CNPSimulatedAnnealing.d \
 ./CNPSolGenerator.d \
 ./CNPSolution.d \
+./CNPTabuSearch.d \
 ./Timer.d \
 ./main.d \
 ./seeds.d 

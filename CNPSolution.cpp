@@ -173,4 +173,21 @@ void CNPSolution::copy(CNPSolution &solution){
 	setValidFitness(solution.hasValidFitness());
 }
 
+void CNPSolution::splitNodes(std::vector<unsigned>& setTrue, std::vector<unsigned>& setFalse)
+{
+	setTrue.resize(_numCrit);
+	setFalse.resize(_sol.size()-_numCrit);
+	unsigned truePos = 0;
+	unsigned falsePos = 0;
+	for (unsigned i = 0; i < (unsigned)_sol.size(); i++) {
+		if (_sol[i] == true) {
+			setTrue[truePos] = i;
+			truePos++;
+		} else {
+			setFalse[falsePos] = i;
+			falsePos++;
+		}
+	}
+}
+
 

@@ -148,6 +148,8 @@ public:
 		_fitnessAssigned=fitnessAssigned;
 	}
 	
+	void splitNodes(std::vector<unsigned>& setTrue, std::vector<unsigned>& setFalse);
+
 };
 
 #endif /* CNPSOLUTION_H_ */

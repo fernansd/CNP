@@ -7,7 +7,7 @@
 //============================================================================
 
 //Definición de algunos parámetros de la experimentación
-#define MAX_SECONDS_PER_RUN 5
+#define MAX_SECONDS_PER_RUN 10
 #define MAX_SOLUTIONS_PER_RUN 100000
 #define NUM_RUNS 5
 
@@ -162,12 +162,15 @@ void runExperiments(vector< vector< vector< double>* >* > &results, char **mainA
 			runARandomSearchExperiment(*theseResults, instance);
 		}*/
 
-		/*//Ejecutar el enfriamientoSimulado
-		vector<double> *theseFirstResults = new vector<double>;
-		vector<double> *bestFirstResults = new vector<double>;
+		vector<double> *theseFirstResults;
+		vector<double> *bestFirstResults;
+
+		//Ejecutar el enfriamientoSimulado
+		theseFirstResults = new vector<double>;
+		bestFirstResults = new vector<double>;
 		resultsOnThisInstance->push_back(theseFirstResults);
 		resultsOnThisInstance->push_back(bestFirstResults);
-		runASAExperiment(*theseFirstResults, *bestFirstResults, instance);*/
+		runASAExperiment(*theseFirstResults, *bestFirstResults, instance);
 
 		/*//Ejecutar la búsqueda tabú
 		theseFirstResults = new vector<double>;
@@ -176,12 +179,12 @@ void runExperiments(vector< vector< vector< double>* >* > &results, char **mainA
 		resultsOnThisInstance->push_back(bestFirstResults);
 		runATSExperiment(*theseFirstResults, *bestFirstResults, instance);*/
 
-		//Ejecutar la búsqueda Iterated Greedy
-		vector<double> *theseFirstResults = new vector<double>;
-		vector<double> *bestFirstResults = new vector<double>;
+		/*//Ejecutar la búsqueda Iterated Greedy
+		theseFirstResults = new vector<double>;
+		bestFirstResults = new vector<double>;
 		resultsOnThisInstance->push_back(theseFirstResults);
 		resultsOnThisInstance->push_back(bestFirstResults);
-		runAIGExperiment(*theseFirstResults, *bestFirstResults, instance);
+		runAIGExperiment(*theseFirstResults, *bestFirstResults, instance);*/
 	}
 }
 
@@ -387,12 +390,12 @@ int main(int argc, char **argv) {
 	// SA, TS, IG
 	vector<double> lastResults;
 	for (unsigned int iInstance = 0; iInstance < numInstances; iInstance++){
-		/*cout << argv[iInstance*2+1] << "_" << argv[iInstance*2+2] << "_currentSA\t";
+		cout << argv[iInstance*2+1] << "_" << argv[iInstance*2+2] << "_currentSA\t";
 		cout << argv[iInstance*2+1] << "_" << argv[iInstance*2+2] << "_bestSA\t";
-		cout << argv[iInstance*2+1] << "_" << argv[iInstance*2+2] << "_currentTS\t";
-		cout << argv[iInstance*2+1] << "_" << argv[iInstance*2+2] << "_bestTS\t";*/
+		/*cout << argv[iInstance*2+1] << "_" << argv[iInstance*2+2] << "_currentTS\t";
+		cout << argv[iInstance*2+1] << "_" << argv[iInstance*2+2] << "_bestTS\t";
 		cout << argv[iInstance*2+1] << "_" << argv[iInstance*2+2] << "_currentIG\t";
-		cout << argv[iInstance*2+1] << "_" << argv[iInstance*2+2] << "_bestIG\t";
+		cout << argv[iInstance*2+1] << "_" << argv[iInstance*2+2] << "_bestIG\t";*/
 		lastResults.push_back(allTheResults.at(iInstance)->at(0)->at(0));
 		lastResults.push_back(allTheResults.at(iInstance)->at(1)->at(0));
 		/*lastResults.push_back(allTheResults.at(iInstance)->at(2)->at(0));
@@ -409,7 +412,7 @@ int main(int argc, char **argv) {
 		allResultsPrinted = true;
 		for (unsigned int iInstance = 0; iInstance < numInstances; iInstance++){
 
-			// SimulatedAnnealing
+			// 1 Metaheurística
 			if (allTheResults.at(iInstance)->at(0)->size() > iIteration){
 				allResultsPrinted = false;
 				cout << allTheResults.at(iInstance)->at(0)->at(iIteration) << "\t";
@@ -428,7 +431,7 @@ int main(int argc, char **argv) {
 			}
 			indexColumn++;
 
-			/*// TabúSearch
+			/*// 2 Metaheurísticas
 			if (allTheResults.at(iInstance)->at(2)->size() > iIteration){
 				allResultsPrinted = false;
 				cout << allTheResults.at(iInstance)->at(2)->at(iIteration) << "\t";
@@ -447,7 +450,7 @@ int main(int argc, char **argv) {
 			}
 			indexColumn++;*/
 			/*
-			// Iterated Greedy
+			// 3 Metaheurísticas
 			if (allTheResults.at(iInstance)->at(4)->size() > iIteration){
 				allResultsPrinted = false;
 				cout << allTheResults.at(iInstance)->at(4)->at(iIteration) << "\t";
