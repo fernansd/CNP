@@ -93,7 +93,7 @@ void CNPSimulatedAnnealing::run(CNPStopCondition& stopCondition) {
 		if (accept(deltaFitness)){
 			_solution->copy(newSol);
 
-			if (_solution->getFitness()-_bestSolution->getFitness() < 0){
+			if (_solution->getFitness()-_bestSolution->getFitness() > 0){
 				_bestSolution->copy(*_solution);
 			}
 		}
@@ -128,10 +128,10 @@ bool CNPSimulatedAnnealing::accept(double deltaFitness) {
 			return true;
 //	}
 
-	double prob = exp(-auxDeltaFitness/_T);
+	double prob = exp(auxDeltaFitness/_T);
 	double randSample = (((double)rand()) / RAND_MAX);
 	if(randSample < prob){
-		return (true);
+		return true;
 	}
 	return false;
 }
