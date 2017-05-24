@@ -16,6 +16,9 @@
 #include <CNPSolGenerator.h>
 #include <CNPSolution.h>
 #include <Timer.h>
+#include <CNPSimulatedAnnealing.h>
+#include <CNPStopCondition.h>
+#include <CNPIteratedGreedy.h>
 
 #include <cstdio>
 #include <cstdlib>
@@ -53,6 +56,85 @@ void runARandomSearchExperiment(vector<double> &results, CNPInstance &instance){
 }
 
 /**
+ * Función que ejecuta el enfriamiento simulado, durante MAX_SECONS_PER_RUN segundos, un máximo de MAX_SOLUTIONS_PER_RUN, para la instancia proporcionada
+ * @param[out] currentResults vector donde se almacenarán los valores fitness de las soluciones que va aceptando el enfriamiento simulado.
+ * @param[out] bestSoFarResults vector donde se almacenarán los mejores valores fitness generados hasta el momento
+ * @param[in] instance Instancia del problema de la mochila cuadrática múltiple
+ */
+void runASAExperiment(vector<double> &currentResults,
+		vector<double> &bestSoFarResults, CNPInstance &instance) {
+
+	//Inicialización
+	CNPSolution initialSolution(instance);
+	CNPSimulatedAnnealing sa;
+	CNPStopCondition stopCond;
+	CNPEvaluator::resetNumEvaluations();
+	sa.initialise(0.9, 10, 0.9999, 10, instance); //cambiado el segundo 10 antes ponia un 50 lo digo el de practicas
+	stopCond.setConditions(MAX_SOLUTIONS_PER_RUN, 0, MAX_SECONDS_PER_RUN);
+
+	//Generar solución aleatoria
+	CNPSolGenerator::genRandomSol(instance, initialSolution);
+	double currentFitness = CNPEvaluator::computeFitness(instance,
+			initialSolution);
+	initialSolution.setFitness(currentFitness);
+	double bestFitness = currentFitness;
+	currentResults.push_back(currentFitness);
+	bestSoFarResults.push_back(bestFitness);
+	sa.setSolution(&initialSolution);
+
+	//Aplicar SA
+	sa.run(stopCond);
+
+	//Almacenar los resultados
+	vector<double> &resultsSA = sa.getResults();
+
+	for (auto aResult : resultsSA) {
+		currentResults.push_back(aResult);
+		bestSoFarResults.push_back(max(bestSoFarResults.back(), aResult));
+	}
+}
+
+/**
+ * Función que realiza la generación de soluciones aleatorias, durante MAX_SECONS_PER_RUN segundos y un máximo de MAX_SOLUTIONS_PER_RUN, para la instancia proporcionada
+ * @param[out] results vector donde se almacenarán los valores fitness de las soluciones aleatorias que se generen
+ * @param[in] insstance Instancia del problema de la mochila cuadrática múltiple
+ */
+void runAIGExperiment(vector<double> &currentResults,
+		vector<double> &bestSoFarResults, CNPInstance &instance) {
+
+	//Inicialización
+	CNPSolution initialSolution(instance);
+	CNPIteratedGreedy ig;
+	CNPStopCondition stopCond;
+	CNPEvaluator::resetNumEvaluations();
+	ig.initialise(0.25, instance);
+	stopCond.setConditions(MAX_SOLUTIONS_PER_RUN, 0, MAX_SECONDS_PER_RUN);
+
+
+	//Generar solución aleatoria para inicialiar la mejor solución
+	//CNPSolGenerator::genRandomSol(instance, initialSolution);
+
+	double currentFitness = CNPEvaluator::computeFitness(instance,initialSolution);
+
+	initialSolution.setFitness(currentFitness);
+	double bestFitness = currentFitness;
+	currentResults.push_back(currentFitness);
+	bestSoFarResults.push_back(bestFitness);
+
+
+	//Aplicar IG
+	ig.run(stopCond);
+
+	//Almacenar los resultados
+	vector<double> &resultsIG = ig.getResults();
+
+	for (auto aResult : resultsIG) {
+		currentResults.push_back(aResult);
+		bestSoFarResults.push_back(max(bestSoFarResults.back(), aResult));
+	}
+}
+
+/**
  * Función que ejecuta todos los experimentos para los argumentos pasados al programa principal, en particular NUM_RUNS experimentos para cada instancia
  * @param[out] results matriz 3D donde se almacenarán los resultados. El primer índice será para la instancia considerada. El segundo para el experimento sobre dicha instancia. El tercero para la solución generada en dicho experimento
  * @param[in] mainArgs Argumentos de la función main (argv). En los argumentos vienen, desde el índice 1, <nombre del fichero de la instancia 1> <número de mochilas> <nombre del fichero de la instancia 2> <número de mochilas>...
@@ -68,16 +150,38 @@ void runExperiments(vector< vector< vector< double>* >* > &results, char **mainA
 		vector< vector < double >* >* resultsOnThisInstance = new vector< vector< double >* >;
 		results.push_back(resultsOnThisInstance);
 		char *instanceName = mainArgs[iInstance];
-		unsigned int numKnapsacks = atoi(mainArgs[iInstance + 1]);
-		instance.readInstance(instanceName, numKnapsacks);
+		unsigned int numNodes = atoi(mainArgs[iInstance + 1]);
+		instance.readInstance(instanceName, numNodes);
 
+		/* Ejecutar aleatorio
 		//Lanzar NUM_RUNS ejecuciones sobre dicha instancia
 		for (unsigned int r = 1; r <= NUM_RUNS && r < numSeeds; r++){
 			srand(seeds[r]); //Inicialización del generador de números aleatorios al inicio de cada ejecución
 			vector<double> *theseResults = new vector<double>;
 			resultsOnThisInstance->push_back(theseResults);
 			runARandomSearchExperiment(*theseResults, instance);
-		}
+		}*/
+
+		/*//Ejecutar el enfriamientoSimulado
+		vector<double> *theseFirstResults = new vector<double>;
+		vector<double> *bestFirstResults = new vector<double>;
+		resultsOnThisInstance->push_back(theseFirstResults);
+		resultsOnThisInstance->push_back(bestFirstResults);
+		runASAExperiment(*theseFirstResults, *bestFirstResults, instance);*/
+
+		/*//Ejecutar la búsqueda tabú
+		theseFirstResults = new vector<double>;
+		bestFirstResults = new vector<double>;
+		resultsOnThisInstance->push_back(theseFirstResults);
+		resultsOnThisInstance->push_back(bestFirstResults);
+		runATSExperiment(*theseFirstResults, *bestFirstResults, instance);*/
+
+		//Ejecutar la búsqueda Iterated Greedy
+		vector<double> *theseFirstResults = new vector<double>;
+		vector<double> *bestFirstResults = new vector<double>;
+		resultsOnThisInstance->push_back(theseFirstResults);
+		resultsOnThisInstance->push_back(bestFirstResults);
+		runAIGExperiment(*theseFirstResults, *bestFirstResults, instance);
 	}
 }
 
@@ -225,6 +329,7 @@ int main(int argc, char **argv) {
 	//////////////////////////
 	unsigned int numInstances = (argc - 1) / 2;
 	vector< vector< vector< double >* >* > allTheResults;
+	srand(seeds[0]);
 	//En la matriz allTheResults se almacenarán todos los valores de fitness generados
 	//Es tridimensional
 	//El primer índice recorre las instancias de los problemas que se han abordado
@@ -235,7 +340,7 @@ int main(int argc, char **argv) {
 
 
 
-
+	/*//Aleatorio
 	////////////////////////////
 	//Calculo de los valores medios
 	////////////////////////////
@@ -257,16 +362,17 @@ int main(int argc, char **argv) {
 		if (numResults > overallMaxNumResults){
 			overallMaxNumResults = numResults;
 		}
-	}
+	}*/
 
 
 
 	//////////////////////
 	// Impresión de resultados
 	//////////////////////
+	/*// Aleatorio
 	for (int iInstance = 1; iInstance < argc; iInstance += 2){
-		cout << argv[iInstance] << "_" << argv[iInstance + 1] << "_best\t";
-		cout << argv[iInstance] << "_" << argv[iInstance + 1] << "_current\t";
+		cout << argv[iInstance] << "_" << argv[iInstance + 1] << "_bestRand\t";
+		cout << argv[iInstance] << "_" << argv[iInstance + 1] << "_currentRand\t";
 	}
 	cout << endl;
 
@@ -276,6 +382,94 @@ int main(int argc, char **argv) {
 			cout << meanResults.at(iInstance)->at(iIteration).current << "\t";
 		}
 		cout << endl;
+	}*/
+
+	// SA, TS, IG
+	vector<double> lastResults;
+	for (unsigned int iInstance = 0; iInstance < numInstances; iInstance++){
+		/*cout << argv[iInstance*2+1] << "_" << argv[iInstance*2+2] << "_currentSA\t";
+		cout << argv[iInstance*2+1] << "_" << argv[iInstance*2+2] << "_bestSA\t";
+		cout << argv[iInstance*2+1] << "_" << argv[iInstance*2+2] << "_currentTS\t";
+		cout << argv[iInstance*2+1] << "_" << argv[iInstance*2+2] << "_bestTS\t";*/
+		cout << argv[iInstance*2+1] << "_" << argv[iInstance*2+2] << "_currentIG\t";
+		cout << argv[iInstance*2+1] << "_" << argv[iInstance*2+2] << "_bestIG\t";
+		lastResults.push_back(allTheResults.at(iInstance)->at(0)->at(0));
+		lastResults.push_back(allTheResults.at(iInstance)->at(1)->at(0));
+		/*lastResults.push_back(allTheResults.at(iInstance)->at(2)->at(0));
+		lastResults.push_back(allTheResults.at(iInstance)->at(3)->at(0));*/
+		/*lastResults.push_back(allTheResults.at(iInstance)->at(4)->at(0));
+		lastResults.push_back(allTheResults.at(iInstance)->at(5)->at(0));*/
+	}
+	cout << endl;
+	bool allResultsPrinted = false;
+	unsigned int iIteration = 0;
+	unsigned int indexColumn = 0;
+
+	while (allResultsPrinted == false){
+		allResultsPrinted = true;
+		for (unsigned int iInstance = 0; iInstance < numInstances; iInstance++){
+
+			// SimulatedAnnealing
+			if (allTheResults.at(iInstance)->at(0)->size() > iIteration){
+				allResultsPrinted = false;
+				cout << allTheResults.at(iInstance)->at(0)->at(iIteration) << "\t";
+				lastResults[indexColumn] = allTheResults.at(iInstance)->at(0)->at(iIteration);
+			} else {
+				cout << lastResults[indexColumn] << "\t";
+			}
+			indexColumn++;
+
+			if (allTheResults.at(iInstance)->at(1)->size() > iIteration){
+				allResultsPrinted = false;
+				cout << allTheResults.at(iInstance)->at(1)->at(iIteration) << "\t";
+				lastResults[indexColumn] = allTheResults.at(iInstance)->at(1)->at(iIteration);
+			} else {
+				cout << lastResults[indexColumn] << "\t";
+			}
+			indexColumn++;
+
+			/*// TabúSearch
+			if (allTheResults.at(iInstance)->at(2)->size() > iIteration){
+				allResultsPrinted = false;
+				cout << allTheResults.at(iInstance)->at(2)->at(iIteration) << "\t";
+				lastResults[indexColumn] = allTheResults.at(iInstance)->at(2)->at(iIteration);
+			} else {
+				cout << lastResults[indexColumn] << "\t";
+			}
+			indexColumn++;
+
+			if (allTheResults.at(iInstance)->at(3)->size() > iIteration){
+				allResultsPrinted = false;
+				cout << allTheResults.at(iInstance)->at(3)->at(iIteration) << "\t";
+				lastResults[indexColumn] = allTheResults.at(iInstance)->at(3)->at(iIteration);
+			} else {
+				cout << lastResults[indexColumn] << "\t";
+			}
+			indexColumn++;*/
+			/*
+			// Iterated Greedy
+			if (allTheResults.at(iInstance)->at(4)->size() > iIteration){
+				allResultsPrinted = false;
+				cout << allTheResults.at(iInstance)->at(4)->at(iIteration) << "\t";
+				lastResults[indexColumn] = allTheResults.at(iInstance)->at(4)->at(iIteration);
+			} else {
+				cout << lastResults[indexColumn] << "\t";
+			}
+			indexColumn++;
+
+			if (allTheResults.at(iInstance)->at(5)->size() > iIteration){
+				allResultsPrinted = false;
+				cout << allTheResults.at(iInstance)->at(5)->at(iIteration) << "\t";
+				lastResults[indexColumn] = allTheResults.at(iInstance)->at(5)->at(iIteration);
+			} else {
+				cout << lastResults[indexColumn] << "\t";
+			}
+			indexColumn++;
+			*/
+		}
+		cout << endl;
+		iIteration++;
+		indexColumn = 0;
 	}
 
 
@@ -285,7 +479,8 @@ int main(int argc, char **argv) {
 	// Liberar memoria
 	//////////////////////
 	free3Darray(allTheResults);
-	free2Darray(meanResults);
+	/*// Aleatorio
+	free2Darray(meanResults);*/
 
 	return 0;
 }

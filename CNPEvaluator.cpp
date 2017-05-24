@@ -142,5 +142,7 @@ double CNPEvaluator::computeFitness(CNPInstance& instance, CNPSolution& solution
 	double fitness = instance.getSuma() - sum;
 	solution.setFitness(fitness);
 
+	_numEvaluations++;
+
 	return fitness;
 }

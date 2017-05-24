@@ -6,6 +6,8 @@
 CPP_SRCS += \
 ../CNPEvaluator.cpp \
 ../CNPInstance.cpp \
+../CNPIteratedGreedy.cpp \
+../CNPObjectAssignmentOperation.cpp \
 ../CNPSimulatedAnnealing.cpp \
 ../CNPSolGenerator.cpp \
 ../CNPSolution.cpp \
@@ -16,6 +18,8 @@ CPP_SRCS += \
 OBJS += \
 ./CNPEvaluator.o \
 ./CNPInstance.o \
+./CNPIteratedGreedy.o \
+./CNPObjectAssignmentOperation.o \
 ./CNPSimulatedAnnealing.o \
 ./CNPSolGenerator.o \
 ./CNPSolution.o \
@@ -26,6 +30,8 @@ OBJS += \
 CPP_DEPS += \
 ./CNPEvaluator.d \
 ./CNPInstance.d \
+./CNPIteratedGreedy.d \
+./CNPObjectAssignmentOperation.d \
 ./CNPSimulatedAnnealing.d \
 ./CNPSolGenerator.d \
 ./CNPSolution.d \
