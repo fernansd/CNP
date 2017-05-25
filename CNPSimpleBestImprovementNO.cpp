@@ -23,6 +23,7 @@ bool CNPSimpleBestImprovementNO::findOperation(CNPInstance& instance, CNPSolutio
 	//Crear una permutación de los índices de los objetos e inicializar algunas variables
 
 	CNPSolution newSol(solution);
+	bestFitness=solution.getFitness();
 
 	vector<int> perm;
 	vector<int> perm2;
@@ -36,7 +37,7 @@ bool CNPSimpleBestImprovementNO::findOperation(CNPInstance& instance, CNPSolutio
 	bool aux;
 	double bestFitness = 0;
 
-	double fitness=0.0;
+	double fitness=0.0,deltaFitness=0;
 
 	for(int i=0;i<numNodo;i++){
 		for(int j=0;j<numNodo;j++){
@@ -50,10 +51,10 @@ bool CNPSimpleBestImprovementNO::findOperation(CNPInstance& instance, CNPSolutio
 				newSol.setNode(perm[j],aux);
 				fitness = CNPEvaluator::computeFitness(instance, newSol);
 			}
-			if(fitness>bestFitness  || initialised == false){
-				initialised = true;
+			if(deltaFitness=fitness-bestFitness>0  /*|| initialised == false*/){
+				/*initialised = true;*/
 				bestFitness=fitness;
-				oaOperation->setValues(perm[i],perm[j], bestFitness);
+				oaOperation->setValues(perm[i],perm[j], deltaFitness);
 			}
 		}
 	}

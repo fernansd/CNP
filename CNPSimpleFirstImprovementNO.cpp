@@ -46,9 +46,10 @@ bool CNPSimpleFirstImprovementNO::findOperation(CNPInstance &instance, CNPSoluti
 
 
 			double Fitness = CNPEvaluator::computeFitness(instance, newSol);
+			double deltaFitness=Fitness-solution.getFitness();
 
-			if (Fitness>solution.getFitness()) {
-			   oaOperation->setValues(perm[i],indexNode, Fitness);
+			if (deltaFitness>0) {
+			   oaOperation->setValues(perm[i],indexNode, deltaFitness);
 				return true;
 			}
 
