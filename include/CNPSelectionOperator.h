@@ -10,7 +10,7 @@
 #define INCLUDE_SELECTIONOPERATOR_H_
 
 #include <vector>
-#include <Solution.h>
+#include <CNPSolution.h>
 
 using namespace std;
 
@@ -29,7 +29,7 @@ public:
 	 * @param[in] orig Vector de soluciones sobre el cual aplicar la selección
 	 * @param[out] result Vector donde se almacenan las soluciones seleccionadas
 	 */
-	virtual void select(vector<Solution*> &orig, vector<Solution*> &result) = 0;
+	virtual void select(vector<CNPSolution*> &orig, vector<CNPSolution*> &result) = 0;
 };
 
 

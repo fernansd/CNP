@@ -9,8 +9,8 @@
 #ifndef INCLUDE_TOURNAMENTSELECTOR_H_
 #define INCLUDE_TOURNAMENTSELECTOR_H_
 
-#include <Solution.h>
 #include <CNPSelectionOperator.h>
+#include <CNPSolution.h>
 #include <vector>
 
 using namespace std;
@@ -32,7 +32,7 @@ protected:
 	 * @param[in] set Vector de soluciones
 	 * @result Solución seleccionada
 	 */
-	Solution* selectOne (vector<Solution*> &set){
+	CNPSolution* selectOne (vector<CNPSolution*> &set){
 
 		/**
 		 * Hecho
@@ -40,7 +40,7 @@ protected:
 		 *
 		 * 2. Repetir (_k-1) veces la selección de otra solución aleatoria y el torneo con la actualmente ganadora (mantener la mejor)
 		 */
-		Solution* best;
+		CNPSolution* best;
 
 		unsigned int tam = (unsigned int)set.size();
 
@@ -77,15 +77,15 @@ public:
 	 * @param[in] orig Vector de soluciones sobre el que aplicar la selección
 	 * @param[out] result Vector donde se almacenan las parejas de padres seleccionadas
 	 */
-	virtual void select(vector<Solution*> &orig, vector<Solution*> &result){
+	virtual void select(vector<CNPSolution*> &orig, vector<CNPSolution*> &result){
 
 		//HECHO utilizando le método propio selectOne, seleccionar tantas parejas
 		//de padres como elementos hay en orig
 
 		//****Preguntar****//
-		///Puede que sea meter por cada iteracion dos Solution en result
+		///Puede que sea meter por cada iteracion dos CNPSolution en result
 
-		//Solution* aux;
+		//CNPSolution* aux;
 		for(int i=0;i<(int)orig.size();i++){
 			//aux=selectOne(orig);
 			result.push_back(selectOne(orig));

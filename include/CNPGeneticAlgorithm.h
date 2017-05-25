@@ -35,7 +35,7 @@ protected:
 	 *  _instancia Instancia del problema abordada
 	 */
 	unsigned _popSize;
-	vector<Solution*> _population;
+	vector<CNPSolution*> _population;
 	SelectionOperator *_selector = NULL;
 	CNPCrossoverOperator *_crossoverOp = NULL;
 	CNPMutationOperator *_mutOp = NULL;
@@ -58,7 +58,7 @@ protected:
 	 * @param[in] set Vector de soluciones
 	 * @return Ã­ndice de la mejor soluciÃ³n
 	 */
-	unsigned indexBest(vector<Solution*> &set) {
+	unsigned indexBest(vector<CNPSolution*> &set) {
 
 		//HECHO buscar el Ã­ndice de la mejor soluciÃ³n en set
 
@@ -80,7 +80,7 @@ protected:
 	 * @param[in] set Vector de soluciones
 	 * @return Ã­ndice de la peor soluciÃ³n
 	 */
-	unsigned indexWorst(vector<Solution*> &set) {
+	unsigned indexWorst(vector<CNPSolution*> &set) {
 
 		//HECHO buscar el índice de la peor solución en set
 
@@ -101,7 +101,7 @@ protected:
 	 * FunciÃ³n que actualiza la nueva poblaciÃ³n, dado el conjunto de descendientes generado
 	 * @param[in] offspring Vector de soluciones descendientes generadas
 	 */
-	void selectNewPopulation(vector<Solution*> &offspring) {
+	void selectNewPopulation(vector<CNPSolution*> &offspring) {
 
 		/**
 		 * HECHO
@@ -147,14 +147,14 @@ protected:
 	 * FunciÃ³n que evalÃºa las soluciones de un vector
 	 * @param[in,out] set Conjunto de soluciones a evaluar. Una vez evaluados, les asigna el fitness
 	 */
-	void evaluate(vector<Solution*> &set) {
+	void evaluate(vector<CNPSolution*> &set) {
 
-		for (Solution *sol : set) {
+		for (CNPSolution *sol : set) {
 			CNPSolution *s = (CNPSolution*) sol;
 
 			/**
 			 * HECHO
-			 * Se ha aÃ±adido una funcionalidad en Solution para detectar si su fitness ya estaba calculado,
+			 * Se ha aÃ±adido una funcionalidad en CNPSolution para detectar si su fitness ya estaba calculado,
 			 * Útil para cuando el descendiente es copia del padre. Por tanto, sólo se evaluarán las soluciones
 			 * que no tentan un fitness vÃ¡lido
 			 */
@@ -206,7 +206,7 @@ protected:
 				_bestSolution->copy(*sol);
 			}
 			_results.push_back(fitness);
-			_population.push_back((Solution*)sol);
+			_population.push_back((CNPSolution*)sol);
 		}
 	}
 
@@ -215,13 +215,13 @@ protected:
 	 * @param[int] set Conjunto de soluciones del que obtener la media del fitness
 	 * @return media del fitness de las soluciones
 	 */
-	double computeMeanFitness(vector<Solution*>&set) {
+	double computeMeanFitness(vector<CNPSolution*>&set) {
 		double mean = 0.;
 		unsigned numElements = (unsigned) set.size();
 		double i_numElements = 1. / numElements;
 
 		for (auto sol : set) {
-			double fitness = sol->getFitness();
+			double fitness = ((CNPSolution*)sol)->getFitness();
 			mean += (fitness * i_numElements);
 		}
 
@@ -282,10 +282,10 @@ public:
 			_bestPerIterations.push_back(
 					_population.at(indexBest(_population))->getFitness());
 
-			vector<Solution*> parents;
+			vector<CNPSolution*> parents;
 			_selector->select(_population, parents);
 
-			vector<Solution*> offspring;
+			vector<CNPSolution*> offspring;
 			_crossoverOp->cross(parents, offspring);
 			_mutOp->mutate(offspring);
 

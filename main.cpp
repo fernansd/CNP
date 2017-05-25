@@ -300,12 +300,12 @@ void runExperiments(vector< vector< vector< double>* >* > &results, char **mainA
 		resultsOnThisInstance->push_back(bestFirstResults);
 		runATSExperiment(*theseFirstResults, *bestFirstResults, instance);*/
 
-		/*//Ejecutar la búsqueda GRASP */
+		/*//Ejecutar la búsqueda GRASP *
 		theseFirstResults = new vector<double>;
 		bestFirstResults = new vector<double>;
 		resultsOnThisInstance->push_back(theseFirstResults);
 		resultsOnThisInstance->push_back(bestFirstResults);
-		runAGraspExperiment(*theseFirstResults, *bestFirstResults, instance);
+		runAGraspExperiment(*theseFirstResults, *bestFirstResults, instance);*/
 
 		/*//Ejecutar la búsqueda Iterated Greedy *
 		theseFirstResults = new vector<double>;
@@ -314,7 +314,7 @@ void runExperiments(vector< vector< vector< double>* >* > &results, char **mainA
 		resultsOnThisInstance->push_back(bestFirstResults);
 		runAIGExperiment(*theseFirstResults, *bestFirstResults, instance);*/
 
-		/*//Ejecutar el algoritmo evolutivo *
+		/*//Ejecutar el algoritmo evolutivo */
 		vector<double> *theseResults = new vector<double>;
 		vector<double> *bestResults = new vector<double>;
 		vector<double> *bestPerIterations = new vector<double>;
@@ -326,7 +326,7 @@ void runExperiments(vector< vector< vector< double>* >* > &results, char **mainA
 		resultsOnThisInstance->push_back(popMeanResults);
 		resultsOnThisInstance->push_back(offMeanResults);
 		runAGAExperiment(*theseResults, *bestResults, *bestPerIterations,
-				*popMeanResults, *offMeanResults, instance);*/
+				*popMeanResults, *offMeanResults, instance);
 	}
 }
 

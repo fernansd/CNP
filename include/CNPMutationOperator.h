@@ -34,7 +34,7 @@ protected:
 	 * Función que muta una solución
 	 * @param[in,out] sol Solución a mutar
 	 */
-	void mutate(Solution* sol){
+	void mutate(CNPSolution* sol){
 		CNPSolution *s = (CNPSolution*) sol;
 
 		unsigned indexNode;
@@ -73,9 +73,9 @@ public:
 	 * Función que muta un conjunto de soluciones
 	 * @param[in,out] sols Soluciones a mutar
 	 */
-	void mutate(vector<Solution*> &sols){
+	void mutate(vector<CNPSolution*> &sols){
 
-		for (Solution* sol : sols){
+		for (CNPSolution* sol : sols){
 			mutate(sol);
 		}
 	}

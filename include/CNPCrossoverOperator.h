@@ -10,7 +10,6 @@
 #define INCLUDE_CNPCROSSOVEROPERATOR_H_
 
 #include <CNPSolution.h>
-#include <Solution.h>
 #include <CNPInstance.h>
 #include <vector>
 
@@ -38,7 +37,7 @@ protected:
 	 * @param[in] s2 segundo padre
 	 * @return Nuevo objeto solución descendiente de haber cruzado s1 y s2. La solución se reserva dinámicamente en memoria. Es responsabilidad del invocador de gestionarla correctamente.
 	 */
-	CNPSolution * cross(Solution *s1, Solution *s2) {
+	CNPSolution * cross(CNPSolution *s1, CNPSolution *s2) {
 		CNPSolution * sol = new CNPSolution(*_instance);
 		CNPSolution * sol1 = (CNPSolution *) s1;
 		CNPSolution * sol2 = (CNPSolution *) s2;
@@ -95,14 +94,14 @@ public:
 	 * @param[in] parents Vector de padres. El cruce se aplica entre cada dos padres consecutivos (1,2), (3,4)...
 	 * @param[out] offspring Vector donde se almacenan los descendientes generados. IMPORTANTE: Esta función reserva memoria dinámicamente para las nuevas soluciones en offspring, por lo que es responsabilidad de quien la invoque de gestionar la memoria adecuadamente.
 	 */
-	void cross(vector<Solution*> &parents, vector<Solution*> &offspring) {
+	void cross(vector<CNPSolution*> &parents, vector<CNPSolution*> &offspring) {
 
 		unsigned numParents = (unsigned) parents.size();
 
 		//TODO aplicar cruce entre cada dos padres consecutivos (1,2), (3,4), ...
 		for (unsigned i=0;i<numParents;i=i+2) {
 			CNPSolution *sol = cross(parents[i],parents[i+1]);
-			offspring.push_back((Solution*)sol);
+			offspring.push_back((CNPSolution*)sol);
 		}
 	}
 };
