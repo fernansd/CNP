@@ -293,19 +293,19 @@ void runExperiments(vector< vector< vector< double>* >* > &results, char **mainA
 		resultsOnThisInstance->push_back(bestFirstResults);
 		runASAExperiment(*theseFirstResults, *bestFirstResults, instance);*/
 
-		/*//Ejecutar la búsqueda tabú *
+		/*//Ejecutar la búsqueda tabú */
 		theseFirstResults = new vector<double>;
 		bestFirstResults = new vector<double>;
 		resultsOnThisInstance->push_back(theseFirstResults);
 		resultsOnThisInstance->push_back(bestFirstResults);
-		runATSExperiment(*theseFirstResults, *bestFirstResults, instance);*/
+		runATSExperiment(*theseFirstResults, *bestFirstResults, instance);
 
-		/*//Ejecutar la búsqueda GRASP */
+		/*//Ejecutar la búsqueda GRASP *
 		theseFirstResults = new vector<double>;
 		bestFirstResults = new vector<double>;
 		resultsOnThisInstance->push_back(theseFirstResults);
 		resultsOnThisInstance->push_back(bestFirstResults);
-		runAGraspExperiment(*theseFirstResults, *bestFirstResults, instance);
+		runAGraspExperiment(*theseFirstResults, *bestFirstResults, instance);*/
 
 		/*//Ejecutar la búsqueda Iterated Greedy
 		theseFirstResults = new vector<double>;

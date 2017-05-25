@@ -73,7 +73,7 @@ void CNPTabuSearch::run(CNPStopCondition& stopCondition) {
 
 		// Elegimos un nodos a quitar de la solución
 		unsigned removed = (unsigned)(rand() % activated.size());
-		auxSol.setNode(removed, false);
+		auxSol.setNode(activated[removed], false);
 
 		//Buscar la mejor operación no tabú, es decir, qué nodo añadir
 		for (unsigned i = 0; i < (unsigned)deactivated.size(); i++) {
