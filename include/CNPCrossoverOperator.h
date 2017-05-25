@@ -57,6 +57,8 @@ protected:
 					prob=85;
 				}else if(!((sol1->getNode(indexNode)==false)&&(sol2->getNode(indexNode)==false))){				//Ambos distintos
 					prob=50;
+				}else{
+					prob=0;
 				}
 
 				if((rand()%100)+1<=prob){
@@ -64,6 +66,7 @@ protected:
 				}
 
 			}
+			sol->setValidFitness(false);
 
 		} else {
 			//Si no hay cruce, copiar el primer padre

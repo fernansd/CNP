@@ -53,6 +53,7 @@ protected:
 				}while(aux==aux2);
 				s->setNode(i,aux2);						//Intercambio de estados
 				s->setNode(indexNode,aux);
+				s->setValidFitness(false);
 			}
 		}
 	}
