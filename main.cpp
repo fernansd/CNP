@@ -283,8 +283,8 @@ void runExperiments(vector< vector< vector< double>* >* > &results, char **mainA
 			runARandomSearchExperiment(*theseResults, instance);
 		}*/
 
-		vector<double> *theseFirstResults;
-		vector<double> *bestFirstResults;
+		//vector<double> *theseFirstResults;
+		//vector<double> *bestFirstResults;
 
 		/*//Ejecutar el enfriamientoSimulado
 		theseFirstResults = new vector<double>;
@@ -314,7 +314,7 @@ void runExperiments(vector< vector< vector< double>* >* > &results, char **mainA
 		resultsOnThisInstance->push_back(bestFirstResults);
 		runAIGExperiment(*theseFirstResults, *bestFirstResults, instance);*/
 
-		/*//Ejecutar el algoritmo evolutivo
+		/*//Ejecutar el algoritmo evolutivo *
 		vector<double> *theseResults = new vector<double>;
 		vector<double> *bestResults = new vector<double>;
 		vector<double> *bestPerIterations = new vector<double>;
