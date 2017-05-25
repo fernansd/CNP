@@ -22,7 +22,7 @@ void CNPIteratedGreedy::chooseOperation(CNPObjectAssignmentOperation& operation,
 	double newDeltaFitness = 0;
     //bool initialisedBestCentrality = false;
     unsigned numNodes = _instance->getNumNodes();
-    unsigned chosenNodes = (unsigned)floor(numNodes*0.1); // Elige el 10 % mejor
+    unsigned chosenNodes = 1/*(unsigned)floor(numNodes*0.1)*/; // Elige el 10 % mejor
     //unsigned numCriticalNodes = _instance->getNumCritMax();
     std::vector<int> topNodes; // Vector que guarda los nodos elegidos como mejores
     for (unsigned i = 0; i < numNodes; i++) {
